@@ -351,7 +351,7 @@ public function getMsgParamNotEmpty(){
 
 
   $response["result"] = "failure";
-  $response["message"] = "Parameters should not be empty !";
+  $response["message"] = "Thông tin không được để trống !";
   return json_encode($response);
 
 }
