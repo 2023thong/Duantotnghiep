@@ -153,28 +153,7 @@ public function deleteThongtin($manv)
 }
 
 
- public function changePassword($name, $password){
 
-
-    $hash = $this -> getHash($password);
-    $encrypted_password = $hash["encrypted"];
-    $salt = $hash["salt"];
-
-    $sql = 'UPDATE users SET encrypted_password = :encrypted_password, salt = :salt WHERE name = :name';
-    $query = $this -> conn -> prepare($sql);
-    $query -> execute(array(':name' => $name, ':encrypted_password' => $encrypted_password, ':salt' => $salt));
-
-    if ($query) {
-
-        return true;
-
-    } else {
-
-        return false;
-
-    }
-
- }
  public function doimatkhau($TenDn, $Matkhau) {
     
 
