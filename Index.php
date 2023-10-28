@@ -171,24 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     }
 }
 
-      if ($operation == 'chgPass') {
-
-        if(isset($data -> user ) && !empty($data -> user) && isset($data -> user -> name) && isset($data -> user -> old_password) 
-          && isset($data -> user -> new_password)){
-
-          $user = $data -> user;
-          $name = $user -> name;
-          $old_password = $user -> old_password;
-          $new_password = $user -> new_password;
-
-          echo $fun -> changePassword($name, $old_password, $new_password);
-
-        } else {
-
-          echo $fun -> getMsgInvalidParam();
-
-        }
-      }
+     
       else if ($operation == 'resPassReq') {
 
         if(isset($data -> user) && !empty($data -> user) &&isset($data -> user -> email)){
