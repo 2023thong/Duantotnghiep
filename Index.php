@@ -172,14 +172,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 }
 
      
-      else if ($operation == 'resPassReq') {
+      if ($operation == 'doimatkhau') {
 
-        if(isset($data -> user) && !empty($data -> user) &&isset($data -> user -> email)){
+        if(isset($data -> user ) && !empty($data -> user) && isset($data -> user -> TenDn) && isset($data -> user -> passwordcu) 
+          && isset($data -> user -> passwordmoi)){
 
           $user = $data -> user;
-          $email = $user -> email;
+          $TenDn = $user -> TenDn;
+          $passwordcu = $user -> passwordcu;
+          $passwordmoi = $user -> passwordmoi;
 
-          echo $fun -> resetPasswordRequest($email);
+          echo $fun -> changePassword($TenDn, $passwordcu, $passwordmoi);
 
         } else {
 
