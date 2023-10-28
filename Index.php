@@ -188,7 +188,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           echo $fun -> getMsgInvalidParam();
 
         }
-      }else if ($operation == 'resPassReq') {
+      }
+      else if ($operation == 'resPassReq') {
 
         if(isset($data -> user) && !empty($data -> user) &&isset($data -> user -> email)){
 
