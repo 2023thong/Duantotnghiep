@@ -257,22 +257,22 @@ public function loginUser($TenDn, $Matkhau) {
 
 
 
-public function changePassword($name, $old_password, $new_password) {
+public function changePassword($TenDn, $passwordcu, $passwordmoi) {
 
   $db = $this -> db;
 
-  if (!empty($name) && !empty($old_password) && !empty($new_password)) {
+  if (!empty($TenDn) && !empty($passwordcu) && !empty($passwordmoi)) {
 
-    if(!$db -> checkLogin($name, $old_password)){
+    if(!$db -> checkLogin($TenDn, $passwordcu)){
 
       $response["result"] = "failure";
-      $response["message"] = 'Invalid Old Password';
+      $response["message"] = 'Mật khẩu cũ không đúng';
       return json_encode($response);
 
     } else {
 
 
-    $result = $db -> changePassword($name, $new_password);
+    $result = $db -> doimatkhau($TenDn, $passwordmoi);
 
       if($result) {
 
