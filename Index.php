@@ -41,8 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   			}
 
   		}
+      ///thêm hàng hóa
 
-      if($operation == 'hanghoa'){
+      if($operation == 'thongtinvn'){
 
   			if(isset($data -> user1 ) && !empty($data -> user1) && isset($data -> user1 -> MaHH) && isset($data -> user1 -> MaNcc) 
         && isset($data -> user1 -> MaLh) && isset($data -> user1 -> TenHh) && isset($data -> user1 -> GiaSp) && isset($data -> user1 -> Ghichu) && isset($data -> user1 -> Soluong) 
@@ -60,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   				
 
           
-            echo $fun -> themhanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
+            echo $fun -> themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
 
           } 
           else {
@@ -110,7 +111,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
     }
   }
-    
+  //thêm nhân viên
+      if($operation == 'themnhanvien'){
+
+  			if(isset($data -> user ) && !empty($data -> user) && isset($data -> user -> MaNv) && isset($data -> user -> TenNv) 
+        && isset($data -> user -> TenDn) && isset($data -> user -> Matkhau) && isset($data -> user -> Sdt) && isset($data -> user -> Diachi) && isset($data -> user -> Chucvu) 
+  				){
+
+  				$user = $data -> user;
+  				$MaNv = $user -> MaNv;
+          $TenNv = $user -> TenNv;
+          $TenDn = $user -> TenDn;
+          $Matkhau = $user -> Matkhau;
+          $Sdt = $user -> Sdt;
+          $Diachi = $user -> Diachi;
+          $Chucvu = $user -> Chucvu;
+
+  				
+
+          
+            echo $fun -> themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $Chucvu);
+
+          } 
+          else {
+
+  				echo $fun -> getMsgInvalidParam();
+
+  			}
+      }
+      //thêm đồ uống
+      if($operation == 'themmenu'){
+
+  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenLh) 
+        && isset($data -> menu -> Giatien)
+  				){
+
+  				$menu = $data -> menu;
+  				$MaMn = $menu -> MaMn;
+          $TenLh = $menu -> TenLh;
+          $Giatien = $menu -> Giatien;
+            echo $fun -> themmenu($MaMn, $TenLh, $Giatien);
+          } 
+          else {
+
+  				echo $fun -> getMsgInvalidParam();
+
+  			}
+      }
+
   if ($operation == 'login') {
     if (isset($data->user) && !empty($data->user) && isset($data->user->TenDn) && isset($data->user->Matkhau)) {
         $user = $data->user;
@@ -123,17 +171,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     }
 }
 
-      if ($operation == 'doimatkhau') {
+      if ($operation == 'chgPass') {
 
-        if(isset($data -> user ) && !empty($data -> user) && isset($data -> user -> TenDn) && isset($data -> user -> passwordcu) 
-          && isset($data -> user -> passwordmoi)){
+        if(isset($data -> user ) && !empty($data -> user) && isset($data -> user -> name) && isset($data -> user -> old_password) 
+          && isset($data -> user -> new_password)){
 
           $user = $data -> user;
-          $TenDn = $user -> TenDn;
-          $passwordcu = $user -> passwordcu;
-          $passwordmoi = $user -> passwordmoi;
+          $name = $user -> name;
+          $old_password = $user -> old_password;
+          $new_password = $user -> new_password;
 
-          echo $fun -> changePassword($TenDn, $passwordcu, $passwordmoi);
+          echo $fun -> changePassword($name, $old_password, $new_password);
 
         } else {
 

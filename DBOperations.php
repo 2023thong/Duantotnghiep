@@ -39,6 +39,7 @@ public function __construct() {
 
     }
  }
+ //thêm hàng hóa
  public function insertHanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
     $unique_id = uniqid('', true);
 
@@ -55,6 +56,40 @@ public function __construct() {
         ':Ghichu' => $Ghichu,
         ':Soluong' => $Soluong,
 
+
+    ));
+
+    return $result; 
+}
+//thêm nhân viên
+public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$Chucvu){
+   
+    $sql = 'INSERT INTO nhanvien ( MaNv, TenNv, TenDn, Matkhau, Sdt, Diachi, Chucvu) VALUES ( :MaNv, :TenNv, :TenDn, :Matkhau, :Sdt, :Diachi, :Chucvu)';
+    $query =$this->conn->prepare($sql);
+    $result = $query->execute(array(
+        
+        ':MaNv' =>$MaNv,
+        ':TenNv'=>$TenNv,
+        ':TenDn'=>$TenDn,
+        ':Matkhau'=>$Matkhau,
+        ':Sdt'=>$Sdt,
+        ':Diachi'=>$Diachi,
+        ':Chucvu'=>$Chucvu,
+    ));
+    return $result; 
+}
+//thêm đồ uống
+public function insertMenu($MaMn, $TenLh, $Giatien) {
+    // $unique_id = uniqid('', true);
+
+    $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaMn' => $MaMn,
+        ':TenLh' => $TenLh,
+        ':Giatien' => $Giatien,
 
     ));
 
@@ -175,17 +210,6 @@ public function deleteThongtin($manv)
     }
 
  }
- public function doimatkhau($TenDn, $Matkhau) {
-    
-
-    $sql = 'UPDATE nhanvien SET Matkhau = :Matkhau WHERE TenDn = :TenDn';
-
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(':TenDn' => $TenDn, ':Matkhau' => $Matkhau));
-
-    return $query->rowCount() > 0; // Trả về true nếu có dòng được cập nhật
-}
-
 
  public function passwordResetRequest($email){
 
@@ -317,6 +341,30 @@ public function deleteThongtin($manv)
     $sql = 'SELECT COUNT(*) from hanghoa WHERE MaHH =:MaHH';
     $query = $this -> conn -> prepare($sql);
     $query -> execute(array('MaHH' => $MaHH));
+
+    if($query){
+
+        $row_count = $query -> fetchColumn();
+
+        if ($row_count == 0){
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
+    } else {
+
+        return false;
+    }
+ }
+  public function checkMaMn($MaMn){
+
+    $sql = 'SELECT COUNT(*) from menu WHERE MaMn =:MaMn';
+    $query = $this -> conn -> prepare($sql);
+    $query -> execute(array('MaMn' => $MaMn));
 
     if($query){
 

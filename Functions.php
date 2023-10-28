@@ -8,7 +8,7 @@ require 'PHPMailer/PHPMailerAutoload.php';
 class Functions{
 
 private $db;
-// private $mail;
+private $mail;
 
 public function __construct() {
 
@@ -54,7 +54,8 @@ public function registerUser($name, $email, $password) {
 
   	}
 }
-public function themhanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
+////// thêm hoàng hóa
+public function themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
 
 	$db = $this -> db;
 
@@ -79,6 +80,78 @@ public function themhanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Sol
 
   				$response["result"] = "failure";
   				$response["message"] = "Registration Failure";
+  				return json_encode($response);
+
+  			}
+  		}
+  	} else {
+
+  		return $this -> getMsgParamNotEmpty();
+
+  	}
+}
+///thêm nhân viên
+public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $Chucvu) {
+
+	$db = $this -> db;
+
+	if (!empty($MaNv) && !empty($TenNv) && !empty($TenDn) && !empty($Matkhau) && !empty($Sdt) && !empty($Diachi)&& !empty($Chucvu)) {
+
+  		if ($db -> checkManv($MaNv)) {
+
+  			$response["result"] = "failure";
+  			$response["message"] = "Mã nhân viên đã tồn tại !";
+  			return json_encode($response);
+
+  		} else {
+  			$result = $db -> insertNhanVien($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $Chucvu);
+
+  			if ($result) {
+
+				  $response["result"] = "success";
+  				$response["message"] = "Thêm thông tin nhân viên thành công !";
+  				return json_encode($response);
+
+  			} else {
+
+  				$response["result"] = "failure";
+  				$response["message"] = "Thêm thông tin nhân viên thất bại!";
+  				return json_encode($response);
+
+  			}
+  		}
+  	} else {
+
+  		return $this -> getMsgParamNotEmpty();
+
+  	}
+}
+//Thêm đồ uống
+public function themmenu($MaMn, $TenLh, $Giatien) {
+
+	$db = $this -> db;
+
+	if (!empty($MaMn) && !empty($TenLh)&& !empty($Giatien)) {
+
+  		if ($db -> checkMaMn($MaMn)) {
+
+  			$response["result"] = "failure";
+  			$response["message"] = "Mã đồ uống đã tồn tại !";
+  			return json_encode($response);
+
+  		} else {
+  			$result = $db -> insertMenu($MaMn, $TenLh , $Giatien);
+
+  			if ($result) {
+
+				  $response["result"] = "success";
+  				$response["message"] = "Thêm thông tin đồ uống thành công !";
+  				return json_encode($response);
+
+  			} else {
+
+  				$response["result"] = "failure";
+  				$response["message"] = "Thêm thông tin đồ uống thất bại!";
   				return json_encode($response);
 
   			}
@@ -184,22 +257,22 @@ public function loginUser($TenDn, $Matkhau) {
 
 
 
-public function changePassword($TenDn, $passwordcu, $passwordmoi) {
+public function changePassword($name, $old_password, $new_password) {
 
   $db = $this -> db;
 
-  if (!empty($TenDn) && !empty($passwordcu) && !empty($passwordmoi)) {
+  if (!empty($name) && !empty($old_password) && !empty($new_password)) {
 
-    if(!$db -> checkLogin($TenDn, $passwordcu)){
+    if(!$db -> checkLogin($name, $old_password)){
 
       $response["result"] = "failure";
-      $response["message"] = 'Mật khẩu cũ không đúng';
+      $response["message"] = 'Invalid Old Password';
       return json_encode($response);
 
     } else {
 
 
-    $result = $db -> doimatkhau($TenDn, $passwordmoi);
+    $result = $db -> changePassword($name, $new_password);
 
       if($result) {
 
@@ -340,6 +413,51 @@ public function resetPassword($email,$code,$password){
 
 }
 
+public function sendEmail($email,$temp_password){
+
+  $mail = $this -> mail;
+  $mail->isSMTP();
+  $mail->Host = 'smtp.gmail.com';
+  $mail->SMTPAuth = true;
+  $mail->Username = 'hanthienduc.96@gmail.com';
+  $mail->Password = 'hantiennam';
+  $mail->SMTPSecure = 'ssl';
+  $mail->Port = 465;
+
+  $mail->From = 'hanthienduc.96@gmail.com';
+  $mail->FromName = 'Han Duc';
+  $mail->addAddress($email, 'Han Duc');
+
+  $mail->addReplyTo('hanthienduc.96@gmail.com', 'Your Name');
+
+  $mail->WordWrap = 50;
+  $mail->isHTML(true);
+
+  $mail->Subject = 'Password Reset Request';
+  $mail->Body    = 'Hi,<br><br> Your password reset code is <b>'.$temp_password.'</b> . This code expires in 120 seconds. Enter this code within 120 seconds to reset your password.<br><br>Thanks,<br>Learnfpt.';
+
+  if(!$mail->send()) {
+
+   return $mail->ErrorInfo;
+
+  } else {
+
+    return true;
+
+  }
+
+}
+
+public function sendPHPMail($email,$temp_password){
+
+  $subject = 'Password Reset Request';
+  $message = 'Hi,\n\n Your password reset code is '.$temp_password.' . This code expires in 120 seconds. Enter this code within 120 seconds to reset your password.\n\nThanks,\nLearfpt.';
+  $from = "your.email@example.com";
+  $headers = "From:" . $from;
+
+  return mail($email,$subject,$message,$headers);
+
+}
 
 
 public function isEmailValid($email){
