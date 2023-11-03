@@ -40,17 +40,17 @@ public function __construct() {
     }
  }
  //thêm hàng hóa
- public function insertHanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
+ public function insertHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
     $unique_id = uniqid('', true);
 
-    $sql = 'INSERT INTO hanghoa (unique_id, MaHH, MaNcc, MaLh, TenHh, GiaSp, Ghichu, Soluong) VALUES (:unique_id, :MaHH, :MaNcc, :MaLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
+    $sql = 'INSERT INTO hanghoa (unique_id, MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong) VALUES (:unique_id, :MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
 
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
         ':unique_id' => $unique_id,
         ':MaHH' => $MaHH,
         ':MaNcc' => $MaNcc,
-        ':MaLh' => $MaLh,
+        ':TenLh' => $TenLh,
         ':TenHh' => $TenHh,
         ':GiaSp' => $GiaSp,
         ':Ghichu' => $Ghichu,
@@ -81,18 +81,14 @@ public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$C
 //thêm đồ uống
 public function insertMenu($MaMn, $TenLh, $Giatien) {
     // $unique_id = uniqid('', true);
-
     $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
-
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
         // ':unique_id' => $unique_id,
         ':MaMn' => $MaMn,
         ':TenLh' => $TenLh,
         ':Giatien' => $Giatien,
-
     ));
-
     return $result; 
 }
 
@@ -150,32 +146,95 @@ public function checkPermission($Chucvu) {
     }
 }
 
- //tim
- public function timnhanvien($manv) {
-    $sql = 'SELECT * FROM nhanvien WHERE manv = :manv';
+//tim
+ public function timnhanvien($MaNv) {
+    $sql = 'SELECT * FROM nhanvien WHERE MaNv = :MaNv';
     $query = $this->conn->prepare($sql);
-    $query->execute(array(':manv' => $manv));
+    $query->execute(array(':MaNv' => $MaNv));
     $data = $query->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
-//sua
- public function updateThongtin($manv, $tennv, $sdt, $diachi)
+//sửa nhan viên
+public function updatenhanvien($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chucvu)
 {
     $sql = 'UPDATE nhanvien
-            SET tennv = :tennv, sdt = :sdt, diachi = :diachi
-            WHERE manv = :manv';
+            SET TenNv = :TenNv, TenDn = :TenDn, Matkhau = :Matkhau,Sdt = :Sdt,Diachi = :Diachi,Chucvu = :Chucvu
+            WHERE MaNv = :MaNv';
 
     $query = $this->conn->prepare($sql);
     $query->execute(array(
-        ':manv' => $manv,
-        ':tennv' => $tennv,
-        ':sdt' => $sdt,
-        ':diachi' => $diachi
+        ':MaNv' => $MaNv,
+        ':TenNv' => $TenNv,
+        ':TenDn' => $TenDn,
+        ':Matkhau' => $Matkhau,
+        ':Sdt' => $Sdt,
+        ':Diachi' => $Diachi,
+        ':Chucvu' => $Chucvu
     ));
 
     return $query->rowCount() > 0;
 }
+//xóa nhân viên
+ public function xoanhanvien($MaNv) {
+    $sql = 'DELETE FROM nhanvien WHERE MaNv = :MaNv';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaNv' => $MaNv));
+    // $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $query->rowCount()>0;
+}
+//xóa menu
+ public function xoanmenu($MaMn) {
+    $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaMn' => $MaMn));
+    // $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $query->rowCount()>0;
+}
+//tim menu
+ public function timnmenu($MaMn) {
+    $sql = 'SELECT * FROM menu WHERE MaMn = :MaMn';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaMn' => $MaMn));
+    $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $data;
+}
+//sửa menu
+public function updatemenu($MaMn, $TenLh, $Giatien)
+{
+    $sql = 'UPDATE menu
+            SET TenLh = :TenLh, Giatien = :Giatien
+            WHERE MaMn = :MaMn';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaMn' => $MaMn,
+        ':TenLh' => $TenLh,
+        ':Giatien' => $Giatien
+    ));
+
+    return $query->rowCount() > 0;
+}
+//sua
+//  public function updateThongtin($manv, $tennv, $sdt, $diachi)
+// {
+//     $sql = 'UPDATE nhanvien
+//             SET tennv = :tennv, sdt = :sdt, diachi = :diachi
+//             WHERE manv = :manv';
+
+//     $query = $this->conn->prepare($sql);
+//     $query->execute(array(
+//         ':manv' => $manv,
+//         ':tennv' => $tennv,
+//         ':sdt' => $sdt,
+//         ':diachi' => $diachi
+//     ));
+
+//     return $query->rowCount() > 0;
+// }
 //xoa
 
  public function doimatkhau($TenDn, $Matkhau) {
@@ -273,6 +332,32 @@ public function checkPermission($Chucvu) {
         return false;
     }
  }
+ //check mã nhân viên
+ public function checkMaNv1($MaNv){
+
+    $sql = 'SELECT COUNT(*) from nhanvien WHERE MaNv =:MaNv';
+    $query = $this -> conn -> prepare($sql);
+    $query -> execute(array('MaNv' => $MaNv));
+
+    if($query){
+
+        $row_count = $query -> fetchColumn();
+
+        if ($row_count == 0){
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
+    } else {
+
+        return false;
+    }
+ }
+ //check mã món
   public function checkMaMn($MaMn){
 
     $sql = 'SELECT COUNT(*) from menu WHERE MaMn =:MaMn';

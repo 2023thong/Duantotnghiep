@@ -55,11 +55,11 @@ public function registerUser($name, $email, $password) {
   	}
 }
 ////// thêm hoàng hóa
-public function themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
+public function themnhanvien($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
 
 	$db = $this -> db;
 
-	if (!empty($MaHH) && !empty($MaNcc) && !empty($MaLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu)&& !empty($Soluong)) {
+	if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu)&& !empty($Soluong)) {
 
   		if ($db -> checkManv($MaHH)) {
 
@@ -68,7 +68,7 @@ public function themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $So
   			return json_encode($response);
 
   		} else {
-  			$result = $db -> insertHanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
+  			$result = $db -> insertHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
 
   			if ($result) {
 
@@ -162,17 +162,71 @@ public function themmenu($MaMn, $TenLh, $Giatien) {
 
   	}
 }
-public function suanhanvien($manv, $tennv, $sdt, $diachi)
+//sửa menu
+public function suamenu($MaMn, $TenLh,$Giatien)
 {
     $db = $this->db;
 
-    if (!empty($manv) && !empty($tennv) && !empty($sdt) && !empty($diachi)) {
-        if (!$db->checkManv($manv)) {
+    if (!empty($MaMn) && !empty($TenLh)&& !empty($Giatien)) {
+        if (!$db->checkMaMn($MaMn)) {
+            $response["result"] = "failure";
+            $response["message"] = "Ma menu khong ton tai!";
+            return json_encode($response);
+        } else {
+            $result = $db->updatemenu($MaMn, $TenLh,$Giatien);
+
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = "Sua thong tin menu thanh cong!";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Sua thong tin menu that bai";
+                return json_encode($response);
+            }
+        }
+    } else {
+        return $this->getMsgParamNotEmpty();
+    }
+}
+public function xoamenu($MaMn)
+{
+    $db = $this->db;
+
+    if (!empty($MaMn)) {
+        if (!$db->checkMaMn($MaMn)) {
+            $response["result"] = "failure";
+            $response["message"] = "Ma menu khong ton tai!";
+            return json_encode($response);
+        } else {
+            $result = $db->deletemenu($MaMn);
+
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = "Xoa menu thanh cong!";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Xoa menu that bai";
+                return json_encode($response);
+            }
+        }
+    } else {
+        return $this->getMsgParamNotEmpty();
+    }
+}
+//sửa nv
+public function suanhanvien1($MaNv, $TenNv,$TenDn, $Matkhau, $Sdt, $Diachi, $Chucvu)
+{
+    $db = $this->db;
+
+    if (!empty($MaNv) && !empty($TenNv)&& !empty($TenDn)&& !empty($Matkhau) && !empty($Sdt) && !empty($Diachi)&& !empty($Chucvu)) {
+        if (!$db->checkMaNv1($MaNv)) {
             $response["result"] = "failure";
             $response["message"] = "Ma nv khong ton tai!";
             return json_encode($response);
         } else {
-            $result = $db->updateThongtin($manv, $tennv, $sdt, $diachi);
+            $result = $db->updatenhanvien($MaNv, $TenNv,$TenDn, $Matkhau, $Sdt, $Diachi, $Chucvu);
 
             if ($result) {
                 $response["result"] = "success";
@@ -188,17 +242,17 @@ public function suanhanvien($manv, $tennv, $sdt, $diachi)
         return $this->getMsgParamNotEmpty();
     }
 }
-public function xoanhanvien($manv)
+public function xoanhanvien($MaNv)
 {
     $db = $this->db;
 
-    if (!empty($manv)) {
-        if (!$db->checkManv($manv)) {
+    if (!empty($MaNv)) {
+        if (!$db->checkMaNv1($MaNv)) {
             $response["result"] = "failure";
             $response["message"] = "Ma nv khong ton tai!";
             return json_encode($response);
         } else {
-            $result = $db->deleteThongtin($manv);
+            $result = $db->xoanhanvien($MaNv);
 
             if ($result) {
                 $response["result"] = "success";
@@ -339,13 +393,13 @@ public function resetPasswordRequest($email){
 
 }
 //timnv
-public function timnhavien1($manv){
+public function timnhavien1($MaNv){
 
   $db = $this -> db;
 
-  if ($db -> checkUserExist($manv)) {
+  if ($db -> checkUserExist($MaNv)) {
 
-    $result =  $db -> timnhanvien($manv);
+    $result =  $db -> timnhanvien($MaNv);
 
     if(!$result){
 

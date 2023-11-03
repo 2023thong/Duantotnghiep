@@ -46,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       if($operation == 'thongtinvn'){
 
   			if(isset($data -> user1 ) && !empty($data -> user1) && isset($data -> user1 -> MaHH) && isset($data -> user1 -> MaNcc) 
-        && isset($data -> user1 -> MaLh) && isset($data -> user1 -> TenHh) && isset($data -> user1 -> GiaSp) && isset($data -> user1 -> Ghichu) && isset($data -> user1 -> Soluong) 
+        && isset($data -> user1 -> TenLh) && isset($data -> user1 -> TenHh) && isset($data -> user1 -> GiaSp) && isset($data -> user1 -> Ghichu) && isset($data -> user1 -> Soluong) 
   				){
 
   				$user1 = $data -> user1;
   				$MaHH = $user1 -> MaHH;
           $MaNcc = $user1 -> MaNcc;
-          $MaLh = $user1 -> MaLh;
+          $MaLh = $user1 -> TenLh;
           $TenHh = $user1 -> TenHh;
           $GiaSp = $user1 -> GiaSp;
           $Ghichu = $user1 -> Ghichu;
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   				
 
           
-            echo $fun -> themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
+            echo $fun -> themnhanvien($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
 
           } 
           else {
@@ -139,6 +139,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
   			}
       }
+      ////
+      else if ($operation == 'suanhanvien1') {
+        if (
+            isset($data->user) && !empty($data->user) &&
+            isset($data->user->MaNv) && isset($data->user->TenNv) &&
+            isset($data->user->TenDn) && isset($data->user->Matkhau)&& 
+            isset($data->user->Sdt)&& isset($data->user->Diachi)&& 
+            isset($data->user->Chucvu)
+        ) {
+            $user = $data->user;
+            $MaNv = $user->MaNv;
+            $TenNv = $user->TenNv;
+            $TenDn = $user->TenDn;
+            $Matkhau = $user->Matkhau;
+            $Sdt = $user->Sdt;    
+            $Diachi = $user->Diachi;
+            $Chucvu = $user->Chucvu;
+    
+            echo $fun->suanhanvien1($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chucvu);
+        } else {
+            echo $fun->getMsgInvalidParam();
+        }
+    }
+
+     if ($operation == 'xoanhanvien') {
+      if (isset($data->user) && !empty($data->user) && isset($data->user->MaNv)) {
+          $MaNv = $data->user->MaNv;
+          echo $fun->xoanhanvien($MaNv);
+      } else {
+          echo $fun->getMsgInvalidParam();
+      }
+  }
+  else if ($operation == 'timnhanvien') {
+
+    if(isset($data -> user) && !empty($data -> user) &&isset($data -> user -> MaNv)){
+
+      $user = $data -> user;
+      $MaNv = $user -> MaNv;
+
+      echo $fun -> timnhavien1($MaNv);
+
+    } else {
+
+      echo $fun -> getMsgInvalidParam();
+
+    }
+  }
       //thêm đồ uống
       if($operation == 'themmenu'){
 
@@ -157,7 +204,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   				echo $fun -> getMsgInvalidParam();
 
   			}
+      }else if ($operation == 'suamenu') {
+        if (
+            isset($data->menu) && !empty($data->menu) &&
+            isset($data->menu->MaMn) && isset($data->menu->TenLh) &&
+            isset($data->menu->Giatien)
+        ) {
+            $menu = $data->menu;
+            $MaMn = $menu->MaMn;
+            $TenLh = $menu->TenLh;
+            $Giatien = $menu->Giatien;
+    
+            echo $fun->suamenu($MaMn, $TenLh, $Giatien);
+        } else {
+            echo $fun->getMsgInvalidParam();
+        }
+    }
+
+     if ($operation == 'xoamenu') {
+      if (isset($data->menu) && !empty($data->menu) && isset($data->menu->MaMn)) {
+          $MaMn = $data->menu->MaMn;
+          echo $fun->xoamenu($MaMn);
+      } else {
+          echo $fun->getMsgInvalidParam();
       }
+  }
+  else if ($operation == 'timmenu') {
+
+    if(isset($data -> menu) && !empty($data -> menu) &&isset($data -> menu -> MaMn)){
+
+      $menu = $data -> menu;
+      $MaMn = $menu -> MaMn;
+
+      echo $fun -> timnmenu($MaMn);
+
+    } else {
+
+      echo $fun -> getMsgInvalidParam();
+
+    }
+  }
 
   if ($operation == 'login') {
     if (isset($data->user) && !empty($data->user) && isset($data->user->TenDn) && isset($data->user->Matkhau)) {
