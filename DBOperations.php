@@ -85,6 +85,48 @@ public function insertLoaihang($TenLh, $Ghichu) {
 
     return $result; 
 }
+//suanhacc
+public function updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt)
+{
+    $sql = 'UPDATE nhacungcap
+            SET TenNcc = :TenNcc, Diachi = :Diachi, Sdt = :Sdt
+            Where MaNcc = :MaNcc ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaNcc' => $MaNcc,
+        ':TenNcc' => $TenNcc,
+        ':Diachi' => $Diachi,
+        ':Sdt' => $Sdt
+        
+    ));
+
+    return $query->rowCount() > 0;
+}
+//xoa hh
+public function xoahh($MaHH) {
+    
+
+    $sql = 'DELETE FROM hanghoa WHERE MaHH = :MaHH';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaHH' => $MaHH));
+
+    return $query->rowCount() > 0; 
+}
+//xoanhacc  ;
+public function xoancc2($MaNcc) {
+    
+
+    $sql = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaNcc' => $MaNcc));
+
+    return $query->rowCount() > 0; 
+}
+
+
 public function insertNhacungcap($TenNcc, $Diachi, $Sdt) {
     $sql = 'INSERT INTO nhacungcap (TenNcc, Diachi, Sdt) VALUES (:TenNcc, :Diachi, :Sdt)';
     $query = $this->conn->prepare($sql);
@@ -168,6 +210,25 @@ public function checkLogin($TenDn, $Matkhau) {
     } else {
         return false;
     }
+}
+public function updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong)
+{
+    $sql = 'UPDATE hanghoa
+            SET MaNcc = :MaNcc, TenLh = :TenLh, TenHh = :TenHh, GiaSp = :GiaSp, Ghichu = :Ghichu, Soluong = :Soluong
+            Where MaHH = :MaHH ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaHH' => $MaHH,
+        ':MaNcc' => $MaNcc,
+        ':TenLh' => $TenLh,
+        ':TenHh' => $TenHh,
+        ':GiaSp' => $GiaSp,
+        ':Ghichu' => $Ghichu,
+        ':Soluong' => $Soluong
+    ));
+
+    return $query->rowCount() > 0;
 }
 
 

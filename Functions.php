@@ -267,8 +267,21 @@ public function suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Sol
     if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong)) {
         
             $result = $db->updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
+
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = "Sua thong tin thanh cong!";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Sua thong tin that bai";
+                return json_encode($response);
+            }
+        }
+        else {
+           return $this->getMsgParamNotEmpty();
     }
-  }
+}
 
 //sửa menu
 public function suamenu($MaMn, $TenLh,$Giatien)
@@ -323,6 +336,29 @@ public function xoamenu($MaMn)
         return $this->getMsgParamNotEmpty();
     }
 }
+//suanccc
+public function suanhacc($MaNcc, $TenNcc, $Diachi , $Sdt)
+{
+    $db = $this->db;
+
+    if (!empty($MaNcc) && !empty($TenNcc) && !empty($Diachi) && !empty($Sdt)) {
+        
+            $result = $db->updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt);
+
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = "Sua thong tin thanh cong!";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Sua thong tin that bai";
+                return json_encode($response);
+            }
+        }
+        else {
+           return $this->getMsgParamNotEmpty();
+    }
+}
 //sửa nv
 public function suanhanvien1($MaNv, $TenNv,$TenDn, $Matkhau, $Sdt, $Diachi, $Chucvu)
 {
@@ -353,15 +389,6 @@ public function suanhanvien1($MaNv, $TenNv,$TenDn, $Matkhau, $Sdt, $Diachi, $Chu
 }
 
 
-public function suanhacc($MaNcc, $TenNcc, $Diachi , $Sdt)
-{
-    $db = $this->db;
-
-    if (!empty($MaNcc) && !empty($TenNcc) && !empty($Diachi) && !empty($Sdt)) {
-        
-            $result = $db->updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt);
-    }
-  }
 
 public function xoanhanvien($MaNv)
 {

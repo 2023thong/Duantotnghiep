@@ -214,6 +214,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
     }
   }
+   //suanhacc
+   if($operation == 'suanhacc'){
+    if(isset($data->user2) && !empty($data->user2) && isset($data->user2->MaNcc) && isset($data->user2->TenNcc) 
+        && isset($data->user2->Diachi)&& isset($data->user2->Sdt)){
+        
+        $user2 = $data->user2;
+        $MaNcc = $user2->MaNcc;
+        $TenNcc = $user2->TenNcc;
+        $Diachi = $user2->Diachi;
+        $Sdt = $user2->Sdt;
+        
+
+        // Sử dụng $path để lưu trữ đường dẫn ảnh
+        echo $fun->suanhacc($MaNcc, $TenNcc, $Diachi , $Sdt);
+    } 
+    else {
+        echo $fun->getMsgInvalidParam();
+    }
+}
   //thêm nhân viên
       if($operation == 'themnhanvien'){
 
