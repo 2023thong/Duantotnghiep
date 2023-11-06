@@ -39,7 +39,57 @@ public function __construct() {
 
     }
  }
- //thêm anh hang hoa
+ //xóa nhân viên
+ public function xoanhanvien($MaNv) {
+    $sql = 'DELETE FROM nhanvien WHERE MaNv = :MaNv';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaNv' => $MaNv));
+    // $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $query->rowCount()>0;
+}
+//xóa menu
+ public function xoamenu($MaMn) {
+    $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaMn' => $MaMn));
+    // $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $query->rowCount()>0;
+}
+	public function updatenhanvien($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chucvu)
+{
+    $sql = 'UPDATE nhanvien
+            SET TenNv = :TenNv, TenDn = :TenDn, Matkhau = :Matkhau,Sdt = :Sdt,Diachi = :Diachi,Chucvu = :Chucvu
+            WHERE MaNv = :MaNv';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaNv' => $MaNv,
+        ':TenNv' => $TenNv,
+        ':TenDn' => $TenDn,
+        ':Matkhau' => $Matkhau,
+        ':Sdt' => $Sdt,
+        ':Diachi' => $Diachi,
+        ':Chucvu' => $Chucvu
+    ));
+
+    return $query->rowCount() > 0;
+}
+	public function insertMenu($MaMn, $TenLh, $Giatien) {
+    // $unique_id = uniqid('', true);
+    $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaMn' => $MaMn,
+        ':TenLh' => $TenLh,
+        ':Giatien' => $Giatien,
+    ));
+    return $result; 
+}
+
+	
 
 
 
