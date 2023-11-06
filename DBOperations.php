@@ -76,18 +76,7 @@ public function __construct() {
 
     return $query->rowCount() > 0;
 }
-	public function insertMenu($MaMn, $TenLh, $Giatien) {
-    // $unique_id = uniqid('', true);
-    $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
-    $query = $this->conn->prepare($sql);
-    $result = $query->execute(array(
-        // ':unique_id' => $unique_id,
-        ':MaMn' => $MaMn,
-        ':TenLh' => $TenLh,
-        ':Giatien' => $Giatien,
-    ));
-    return $result; 
-}
+	
 
 	
 
