@@ -248,12 +248,20 @@ public function xoancc1($MaNcc)
 {
     $db = $this->db;
 
-    $result = $db -> xoancc2($MaNcc);
+    $result = $db->xoancc2($MaNcc);
     
-    if ($result) {
+    if ($result === true) {
         $response["result"] = "success";
-        $response["message"] = "Xóa thông tin nhà cung cấp thành công !";
+        $response["message"] = "Xóa thông tin nhà cung cấp thành công!";
     } 
+    elseif ($result === false) {
+        $response["result"] = "failure";
+        $response["message"] = "Xóa thông tin thất bại, thông tin đang được ràng buộc!";
+    }
+    else {
+        $response["result"] = "error";
+        $response["message"] = "Lỗi không xác định xảy ra trong quá trình xóa!";
+    }
     
     return json_encode($response);
 }

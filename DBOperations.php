@@ -39,7 +39,22 @@ public function __construct() {
 
     }
  }
- //thêm anh hang hoa
+ //sửa menu
+public function updatemenu($MaMn, $TenLh, $Giatien)
+{
+    $sql = 'UPDATE menu
+            SET TenLh = :TenLh, Giatien = :Giatien
+            WHERE MaMn = :MaMn';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaMn' => $MaMn,
+        ':TenLh' => $TenLh,
+        ':Giatien' => $Giatien
+    ));
+
+    return $query->rowCount() > 0;
+}
 
 
 
@@ -116,16 +131,32 @@ public function xoahh($MaHH) {
 }
 //xoanhacc  ;
 public function xoancc2($MaNcc) {
-    
+    try {
+        $this->conn->beginTransaction();
 
-    $sql = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
+        // Kiểm tra ràng buộc khóa ngoại trước khi xóa
+        $sqlCheck = 'SELECT COUNT(*) FROM hanghoa WHERE MaNcc = :MaNcc';
+        $queryCheck = $this->conn->prepare($sqlCheck);
+        $queryCheck->execute(array(':MaNcc' => $MaNcc));
+        $count = $queryCheck->fetchColumn();
 
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(':MaNcc' => $MaNcc));
+        if ($count > 0) {
+            $this->conn->rollback();
+            return false;
+        }
 
-    return $query->rowCount() > 0; 
+        // Xóa nhà cung cấp nếu không có ràng buộc khóa ngoại
+        $sqlDelete = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
+        $queryDelete = $this->conn->prepare($sqlDelete);
+        $queryDelete->execute(array(':MaNcc' => $MaNcc));
+
+        $this->conn->commit();
+        return true;
+    } catch (PDOException $e) {
+        $this->conn->rollback();
+        return false;
+    }
 }
-
 
 public function insertNhacungcap($TenNcc, $Diachi, $Sdt) {
     $sql = 'INSERT INTO nhacungcap (TenNcc, Diachi, Sdt) VALUES (:TenNcc, :Diachi, :Sdt)';
@@ -252,24 +283,44 @@ public function checkPermission($Chucvu) {
 
     return $data;
 }
-//sua
- public function updateThongtin($manv, $tennv, $sdt, $diachi)
+//sửa nhan viên
+public function updatenhanvien($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chucvu)
 {
     $sql = 'UPDATE nhanvien
-            SET tennv = :tennv, sdt = :sdt, diachi = :diachi
-            WHERE manv = :manv';
+            SET TenNv = :TenNv, TenDn = :TenDn, Matkhau = :Matkhau,Sdt = :Sdt,Diachi = :Diachi,Chucvu = :Chucvu
+            WHERE MaNv = :MaNv';
 
     $query = $this->conn->prepare($sql);
     $query->execute(array(
-        ':manv' => $manv,
-        ':tennv' => $tennv,
-        ':sdt' => $sdt,
-        ':diachi' => $diachi
+        ':MaNv' => $MaNv,
+        ':TenNv' => $TenNv,
+        ':TenDn' => $TenDn,
+        ':Matkhau' => $Matkhau,
+        ':Sdt' => $Sdt,
+        ':Diachi' => $Diachi,
+        ':Chucvu' => $Chucvu
     ));
 
     return $query->rowCount() > 0;
 }
-//xoa
+//xóa nhân viên
+public function xoanhanvien($MaNv) {
+    $sql = 'DELETE FROM nhanvien WHERE MaNv = :MaNv';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaNv' => $MaNv));
+    // $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $query->rowCount()>0;
+}
+//xóa menu
+ public function xoamenu($MaMn) {
+    $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaMn' => $MaMn));
+    // $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $query->rowCount()>0;
+}
 
  public function doimatkhau($TenDn, $Matkhau) {
     
