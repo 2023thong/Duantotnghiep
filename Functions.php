@@ -199,7 +199,7 @@ public function xoamenu($MaMn)
             $response["message"] = "Ma menu khong ton tai!";
             return json_encode($response);
         } else {
-            $result = $db->deletemenu($MaMn);
+            $result = $db->xoamenu($MaMn);
 
             if ($result) {
                 $response["result"] = "success";

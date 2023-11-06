@@ -185,7 +185,7 @@ public function updatenhanvien($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chu
     return $query->rowCount()>0;
 }
 //xóa menu
- public function xoanmenu($MaMn) {
+ public function xoamenu($MaMn) {
     $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
     $query = $this->conn->prepare($sql);
     $query->execute(array(':MaMn' => $MaMn));
