@@ -48,7 +48,7 @@ public function __construct() {
  public function insertHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
     
 
-    $sql = 'INSERT INTO hanghoa (MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong ) VALUES (:MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
+    $sql = 'INSERT INTO hanghoa ( MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong) VALUES ( :MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
 
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
@@ -117,18 +117,14 @@ public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$C
 //thêm đồ uống
 public function insertMenu($MaMn, $TenLh, $Giatien) {
     // $unique_id = uniqid('', true);
-
     $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
-
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
         // ':unique_id' => $unique_id,
         ':MaMn' => $MaMn,
         ':TenLh' => $TenLh,
         ':Giatien' => $Giatien,
-
     ));
-
     return $result; 
 }
 
@@ -186,76 +182,33 @@ public function checkPermission($Chucvu) {
     }
 }
 
- //tim
- public function timnhanvien($manv) {
-    $sql = 'SELECT * FROM nhanvien WHERE manv = :manv';
+//tim
+ public function timnhanvien($MaNv) {
+    $sql = 'SELECT * FROM nhanvien WHERE MaNv = :MaNv';
     $query = $this->conn->prepare($sql);
-    $query->execute(array(':manv' => $manv));
+    $query->execute(array(':MaNv' => $MaNv));
     $data = $query->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
 //sua
- public function updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong)
+ public function updateThongtin($manv, $tennv, $sdt, $diachi)
 {
-    $sql = 'UPDATE hanghoa
-            SET MaNcc = :MaNcc, TenLh = :TenLh, TenHh = :TenHh, GiaSp = :GiaSp, Ghichu = :Ghichu, Soluong = :Soluong
-            Where MaHH = :MaHH ';
+    $sql = 'UPDATE nhanvien
+            SET tennv = :tennv, sdt = :sdt, diachi = :diachi
+            WHERE manv = :manv';
 
     $query = $this->conn->prepare($sql);
     $query->execute(array(
-        ':MaHH' => $MaHH,
-        ':MaNcc' => $MaNcc,
-        ':TenLh' => $TenLh,
-        ':TenHh' => $TenHh,
-        ':GiaSp' => $GiaSp,
-        ':Ghichu' => $Ghichu,
-        ':Soluong' => $Soluong
+        ':manv' => $manv,
+        ':tennv' => $tennv,
+        ':sdt' => $sdt,
+        ':diachi' => $diachi
     ));
 
     return $query->rowCount() > 0;
 }
-//suanhacc
-public function updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt)
-{
-    $sql = 'UPDATE nhacungcap
-            SET TenNcc = :TenNcc, Diachi = :Diachi, Sdt = :Sdt
-            Where MaNcc = :MaNcc ';
-
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(
-        ':MaNcc' => $MaNcc,
-        ':TenNcc' => $TenNcc,
-        ':Diachi' => $Diachi,
-        ':Sdt' => $Sdt
-        
-    ));
-
-    return $query->rowCount() > 0;
-}
-//xoa hh
-public function xoahh($MaHH) {
-    
-
-    $sql = 'DELETE FROM hanghoa WHERE MaHH = :MaHH';
-
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(':MaHH' => $MaHH));
-
-    return $query->rowCount() > 0; 
-}
-//xoanhacc  ;
-public function xoancc2($MaNcc) {
-    
-
-    $sql = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
-
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(':MaNcc' => $MaNcc));
-
-    return $query->rowCount() > 0; 
-}
-
+//xoa
 
  public function doimatkhau($TenDn, $Matkhau) {
     
@@ -352,6 +305,32 @@ public function xoancc2($MaNcc) {
         return false;
     }
  }
+ //check mã nhân viên
+ public function checkMaNv1($MaNv){
+
+    $sql = 'SELECT COUNT(*) from nhanvien WHERE MaNv =:MaNv';
+    $query = $this -> conn -> prepare($sql);
+    $query -> execute(array('MaNv' => $MaNv));
+
+    if($query){
+
+        $row_count = $query -> fetchColumn();
+
+        if ($row_count == 0){
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
+    } else {
+
+        return false;
+    }
+ }
+ //check mã món
   public function checkMaMn($MaMn){
 
     $sql = 'SELECT COUNT(*) from menu WHERE MaMn =:MaMn';
