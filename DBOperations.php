@@ -39,6 +39,7 @@ public function __construct() {
 
     }
  }
+ //thêm hàng hóa
  public function insertHanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
     $unique_id = uniqid('', true);
 
@@ -55,6 +56,57 @@ public function __construct() {
         ':Ghichu' => $Ghichu,
         ':Soluong' => $Soluong,
 
+
+    ));
+
+    return $result; 
+}
+//thêm nhân viên
+public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$Chucvu){
+   
+    $sql = 'INSERT INTO nhanvien ( MaNv, TenNv, TenDn, Matkhau, Sdt, Diachi, Chucvu) VALUES ( :MaNv, :TenNv, :TenDn, :Matkhau, :Sdt, :Diachi, :Chucvu)';
+    $query =$this->conn->prepare($sql);
+    $result = $query->execute(array(
+        
+        ':MaNv' =>$MaNv,
+        ':TenNv'=>$TenNv,
+        ':TenDn'=>$TenDn,
+        ':Matkhau'=>$Matkhau,
+        ':Sdt'=>$Sdt,
+        ':Diachi'=>$Diachi,
+        ':Chucvu'=>$Chucvu,
+    ));
+    return $result; 
+}
+//thêm bàn
+public function insertBan($MaBn, $TenBan, $Trangthai) {
+    // $unique_id = uniqid('', true);
+
+    $sql = 'INSERT INTO ban (MaBn, TenBan, Trangthai) VALUES (:MaBn, :TenBan, :Trangthai)';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaBn' => $MaBn,
+        ':TenBan' => $TenBan,
+        ':Trangthai' => $Trangthai,
+
+    ));
+
+    return $result; 
+}
+//thêm đồ uống
+public function insertMenu($MaMn, $TenLh, $Giatien) {
+    // $unique_id = uniqid('', true);
+
+    $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaMn' => $MaMn,
+        ':TenLh' => $TenLh,
+        ':Giatien' => $Giatien,
 
     ));
 
@@ -142,39 +194,7 @@ public function checkPermission($Chucvu) {
     return $query->rowCount() > 0;
 }
 //xoa
-public function deleteThongtin($manv)
-{
-    $sql = 'DELETE FROM nhanvien WHERE manv = :manv';
 
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(':manv' => $manv));
-
-    return $query->rowCount() > 0;
-}
-
-
- public function changePassword($name, $password){
-
-
-    $hash = $this -> getHash($password);
-    $encrypted_password = $hash["encrypted"];
-    $salt = $hash["salt"];
-
-    $sql = 'UPDATE users SET encrypted_password = :encrypted_password, salt = :salt WHERE name = :name';
-    $query = $this -> conn -> prepare($sql);
-    $query -> execute(array(':name' => $name, ':encrypted_password' => $encrypted_password, ':salt' => $salt));
-
-    if ($query) {
-
-        return true;
-
-    } else {
-
-        return false;
-
-    }
-
- }
  public function doimatkhau($TenDn, $Matkhau) {
     
 
@@ -186,73 +206,7 @@ public function deleteThongtin($manv)
     return $query->rowCount() > 0; // Trả về true nếu có dòng được cập nhật
 }
 
-
- public function passwordResetRequest($email){
-
-    $random_string = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 6)), 0, 6);
-    $hash = $this->getHash($random_string);
-    $encrypted_temp_password = $hash["encrypted"];
-    $salt = $hash["salt"];
-
-    $sql = 'SELECT COUNT(*) from password_reset_request WHERE email =:email';
-    $query = $this -> conn -> prepare($sql);
-    $query -> execute(array('email' => $email));
-
-    if($query){
-
-        $row_count = $query -> fetchColumn();
-
-        if ($row_count == 0){
-
-
-            $insert_sql = 'INSERT INTO password_reset_request SET email =:email,encrypted_temp_password =:encrypted_temp_password,
-                    salt =:salt,created_at = :created_at';
-            $insert_query = $this ->conn ->prepare($insert_sql);
-            $insert_query->execute(array(':email' => $email, ':encrypted_temp_password' => $encrypted_temp_password,
-            ':salt' => $salt, ':created_at' => date("Y-m-d H:i:s")));
-
-            if ($insert_query) {
-
-                $user["email"] = $email;
-                $user["temp_password"] = $random_string;
-
-                return $user;
-
-            } else {
-
-                return false;
-
-            }
-
-
-        } else {
-
-            $update_sql = 'UPDATE password_reset_request SET email =:email,encrypted_temp_password =:encrypted_temp_password,
-                    salt =:salt,created_at = :created_at';
-            $update_query = $this -> conn -> prepare($update_sql);
-            $update_query -> execute(array(':email' => $email, ':encrypted_temp_password' => $encrypted_temp_password,
-            ':salt' => $salt, ':created_at' => date("Y-m-d H:i:s")));
-
-            if ($update_query) {
-
-                $user["email"] = $email;
-                $user["temp_password"] = $random_string;
-                return $user;
-
-            } else {
-
-                return false;
-
-            }
-
-        }
-    } else {
-
-        return false;
-    }
-
-
- }
+ 
 
  public function resetPassword($email,$code,$password){
 
@@ -336,6 +290,30 @@ public function deleteThongtin($manv)
         return false;
     }
  }
+  public function checkMaMn($MaMn){
+
+    $sql = 'SELECT COUNT(*) from menu WHERE MaMn =:MaMn';
+    $query = $this -> conn -> prepare($sql);
+    $query -> execute(array('MaMn' => $MaMn));
+
+    if($query){
+
+        $row_count = $query -> fetchColumn();
+
+        if ($row_count == 0){
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
+    } else {
+
+        return false;
+    }
+ }
 
  public function getHash($password) {
 
@@ -350,8 +328,10 @@ public function deleteThongtin($manv)
 
 
 
+
 public function verifyHash($password, $hash) {
 
     return password_verify ($password, $hash);
 }
 }
+
