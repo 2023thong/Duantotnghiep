@@ -39,28 +39,64 @@ public function __construct() {
 
     }
  }
- //thêm hàng hóa
- public function insertHanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
-    $unique_id = uniqid('', true);
+ //thêm anh hang hoa
 
-    $sql = 'INSERT INTO hanghoa (unique_id, MaHH, MaNcc, MaLh, TenHh, GiaSp, Ghichu, Soluong) VALUES (:unique_id, :MaHH, :MaNcc, :MaLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
+
+
+
+ //thêm hàng hóa
+ public function insertHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
+    
+
+    $sql = 'INSERT INTO hanghoa (MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong ) VALUES (:MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
 
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
-        ':unique_id' => $unique_id,
+        
         ':MaHH' => $MaHH,
         ':MaNcc' => $MaNcc,
-        ':MaLh' => $MaLh,
+        ':TenLh' => $TenLh,
         ':TenHh' => $TenHh,
         ':GiaSp' => $GiaSp,
         ':Ghichu' => $Ghichu,
         ':Soluong' => $Soluong,
+        
 
 
     ));
 
     return $result; 
 }
+//loaihang
+public function insertLoaihang($TenLh, $Ghichu) {
+    
+
+    $sql = 'INSERT INTO loaihang (TenLh, Ghichu ) VALUES (:TenLh, :Ghichu)';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        ':TenLh' => $TenLh,
+        ':Ghichu' => $Ghichu,
+        
+        
+
+
+    ));
+
+    return $result; 
+}
+public function insertNhacungcap($TenNcc, $Diachi, $Sdt) {
+    $sql = 'INSERT INTO nhacungcap (TenNcc, Diachi, Sdt) VALUES (:TenNcc, :Diachi, :Sdt)';
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        ':TenNcc' => $TenNcc,
+        ':Diachi' => $Diachi,
+        ':Sdt' => $Sdt
+    ));
+
+    return $result;
+}
+
 //thêm nhân viên
 public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$Chucvu){
    
@@ -160,23 +196,66 @@ public function checkPermission($Chucvu) {
     return $data;
 }
 //sua
- public function updateThongtin($manv, $tennv, $sdt, $diachi)
+ public function updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong)
 {
-    $sql = 'UPDATE nhanvien
-            SET tennv = :tennv, sdt = :sdt, diachi = :diachi
-            WHERE manv = :manv';
+    $sql = 'UPDATE hanghoa
+            SET MaNcc = :MaNcc, TenLh = :TenLh, TenHh = :TenHh, GiaSp = :GiaSp, Ghichu = :Ghichu, Soluong = :Soluong
+            Where MaHH = :MaHH ';
 
     $query = $this->conn->prepare($sql);
     $query->execute(array(
-        ':manv' => $manv,
-        ':tennv' => $tennv,
-        ':sdt' => $sdt,
-        ':diachi' => $diachi
+        ':MaHH' => $MaHH,
+        ':MaNcc' => $MaNcc,
+        ':TenLh' => $TenLh,
+        ':TenHh' => $TenHh,
+        ':GiaSp' => $GiaSp,
+        ':Ghichu' => $Ghichu,
+        ':Soluong' => $Soluong
     ));
 
     return $query->rowCount() > 0;
 }
-//xoa
+//suanhacc
+public function updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt)
+{
+    $sql = 'UPDATE nhacungcap
+            SET TenNcc = :TenNcc, Diachi = :Diachi, Sdt = :Sdt
+            Where MaNcc = :MaNcc ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaNcc' => $MaNcc,
+        ':TenNcc' => $TenNcc,
+        ':Diachi' => $Diachi,
+        ':Sdt' => $Sdt
+        
+    ));
+
+    return $query->rowCount() > 0;
+}
+//xoa hh
+public function xoahh($MaHH) {
+    
+
+    $sql = 'DELETE FROM hanghoa WHERE MaHH = :MaHH';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaHH' => $MaHH));
+
+    return $query->rowCount() > 0; 
+}
+//xoanhacc  ;
+public function xoancc2($MaNcc) {
+    
+
+    $sql = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaNcc' => $MaNcc));
+
+    return $query->rowCount() > 0; 
+}
+
 
  public function doimatkhau($TenDn, $Matkhau) {
     
@@ -278,6 +357,54 @@ public function checkPermission($Chucvu) {
     $sql = 'SELECT COUNT(*) from menu WHERE MaMn =:MaMn';
     $query = $this -> conn -> prepare($sql);
     $query -> execute(array('MaMn' => $MaMn));
+
+    if($query){
+
+        $row_count = $query -> fetchColumn();
+
+        if ($row_count == 0){
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
+    } else {
+
+        return false;
+    }
+ }
+ public function checkLoaihh($TenLh){
+
+    $sql = 'SELECT COUNT(*) from loaihang WHERE TenLh =:TenLh';
+    $query = $this -> conn -> prepare($sql);
+    $query -> execute(array('TenLh' => $TenLh));
+
+    if($query){
+
+        $row_count = $query -> fetchColumn();
+
+        if ($row_count == 0){
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
+    } else {
+
+        return false;
+    }
+ }
+ public function checkMancc($MaNcc){
+
+    $sql = 'SELECT COUNT(*) from nhacungcap WHERE MaNcc =:MaNcc';
+    $query = $this -> conn -> prepare($sql);
+    $query -> execute(array('MaNcc' => $MaNcc));
 
     if($query){
 

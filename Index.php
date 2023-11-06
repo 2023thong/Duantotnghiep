@@ -44,45 +44,121 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       ///thêm hàng hóa
 
       if($operation == 'thongtinvn'){
-
-  			if(isset($data -> user1 ) && !empty($data -> user1) && isset($data -> user1 -> MaHH) && isset($data -> user1 -> MaNcc) 
-        && isset($data -> user1 -> MaLh) && isset($data -> user1 -> TenHh) && isset($data -> user1 -> GiaSp) && isset($data -> user1 -> Ghichu) && isset($data -> user1 -> Soluong) 
-  				){
-
-  				$user1 = $data -> user1;
-  				$MaHH = $user1 -> MaHH;
-          $MaNcc = $user1 -> MaNcc;
-          $MaLh = $user1 -> MaLh;
-          $TenHh = $user1 -> TenHh;
-          $GiaSp = $user1 -> GiaSp;
-          $Ghichu = $user1 -> Ghichu;
-          $Soluong = $user1 -> Soluong;
-
-  				
-
+        
+    
+        if(isset($data->user1) && !empty($data->user1) && isset($data->user1->MaHH) && isset($data->user1->MaNcc) 
+            && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong)){
+            
+            $user1 = $data->user1;
+            $MaHH = $user1->MaHH;
+            $MaNcc = $user1->MaNcc;
+            $TenLh = $user1->TenLh;
+            $TenHh = $user1->TenHh;
+            $GiaSp = $user1->GiaSp;
+            $Ghichu = $user1->Ghichu;
+            $Soluong = $user1->Soluong;
+    
+            // Sử dụng $path để lưu trữ đường dẫn ảnh
+            echo $fun->themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong);
+        } 
+        else {
+            echo $fun->getMsgInvalidParam();
+        }
+    }
+    //suanhacc
+    if($operation == 'suanhacc'){
+      if(isset($data->user2) && !empty($data->user2) && isset($data->user2->MaNcc) && isset($data->user2->TenNcc) 
+          && isset($data->user2->Diachi)&& isset($data->user2->Sdt)){
           
-            echo $fun -> themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
-
-          } 
-          else {
-
-  				echo $fun -> getMsgInvalidParam();
-
-  			}
+          $user2 = $data->user2;
+          $MaNcc = $user2->MaNcc;
+          $TenNcc = $user2->TenNcc;
+          $Diachi = $user2->Diachi;
+          $Sdt = $user2->Sdt;
+          
+  
+          // Sử dụng $path để lưu trữ đường dẫn ảnh
+          echo $fun->suanhacc($MaNcc, $TenNcc, $Diachi , $Sdt);
+      } 
+      else {
+          echo $fun->getMsgInvalidParam();
       }
-      else if ($operation == 'sua_thongtinvn') {
+  }
+    //themloaihh
+    if($operation == 'themloaihang'){
+        
+    
+      if(isset($data->loaihang) && !empty($data->loaihang) && isset($data->loaihang->TenLh) && isset($data->loaihang->Ghichu) 
+           ){
+          
+          $loaihang = $data->loaihang;
+          $TenLh = $loaihang->TenLh;
+          $Ghichu = $loaihang->Ghichu;
+          
+          
+          echo $fun->themloaihang($TenLh, $Ghichu);
+      } 
+      else {
+          echo $fun->getMsgInvalidParam();
+      }
+  }
+    //thêm ncc
+    if($operation == 'nhacungcap'){
+      if(isset($data->user2) && !empty($data->user2) && isset($data->user2->TenNcc) 
+          && isset($data->user2->Diachi) && isset($data->user2->Sdt)){
+          
+          $user2 = $data->user2;
+          $TenNcc = $user2->TenNcc;
+          $Diachi = $user2->Diachi;
+          $Sdt = $user2->Sdt;
+  
+          echo $fun->themnhacungcap($TenNcc, $Diachi, $Sdt);
+      } 
+      else {
+          echo $fun->getMsgInvalidParam();
+      }
+  }
+  
+    
+      // xoahh
+      if ($operation == 'xoahh') {
+        if (isset($data->user1) && !empty($data->user1) && isset($data -> user1 -> MaHH) ) 
+        {
+            $user1 = $data -> user1;
+            $MaHH = $user1 -> MaHH;
+            echo $fun->xoahanghoa1($MaHH);
+        } else {
+            echo $fun->getMsgInvalidParam();
+        }
+    }
+    if ($operation == 'xoancc') {
+      if (isset($data->user2) && !empty($data->user2) && isset($data -> user2 -> MaNcc) ) 
+      {
+          $user2 = $data -> user2;
+          $MaNcc = $user2 -> MaNcc;
+          echo $fun->xoancc1($MaNcc);
+      } else {
+          echo $fun->getMsgInvalidParam();
+      }
+  }
+
+      else if ($operation == 'sua_hanghoa') {
         if (
             isset($data->user1) && !empty($data->user1) &&
-            isset($data->user1->manv) && isset($data->user1->tennv) &&
-            isset($data->user1->sdt) && isset($data->user1->diachi)
+            isset($data->user1->MaHH) && isset($data->user1->MaNcc) &&
+            isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) &&
+            isset($data->user1->Ghichu) && isset($data->user1->Soluong)
         ) {
             $user1 = $data->user1;
-            $manv = $user1->manv;
-            $tennv = $user1->tennv;
-            $sdt = $user1->sdt;
-            $diachi = $user1->diachi;
+            $MaHH = $user1->MaHH;
+            $MaNcc = $user1->MaNcc;
+            $TenLh = $user1->TenLh;
+            $TenHh = $user1->TenHh;
+            $GiaSp = $user1->GiaSp;
+            $Ghichu = $user1->Ghichu;
+            $Soluong = $user1->Soluong;
     
-            echo $fun->suanhanvien($manv, $tennv, $sdt, $diachi);
+            echo $fun->suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
         } else {
             echo $fun->getMsgInvalidParam();
         }

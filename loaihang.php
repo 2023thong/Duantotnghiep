@@ -15,27 +15,23 @@ try {
     $pdo = new PDO("mysql:host=" . DB_SERVER .";dbname=" . DB_DATABASE, DB_USER, DB_PASSWORD);
 
     // get all products from products table
-    $query = "SELECT * FROM hanghoa";
+    $query = "SELECT * FROM loaihang";
     $stmt = $pdo->query($query);
 
     // check for empty result
     if ($stmt->rowCount() > 0) {
         // products node
-        $response["hanghoa"] = array();
+        $response["loaihang"] = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             // temp user array
             $product = array();
-            $product["MaHH"] = $row["MaHH"];
-            $product["MaNcc"] = $row["MaNcc"];
+            
             $product["TenLh"] = $row["TenLh"];
-            $product["TenHh"] = $row["TenHh"];
-            $product["GiaSp"] = $row["GiaSp"];
-            $product["Ghichu"] = $row["Ghichu"];
-            $product["Soluong"] = $row["Soluong"];
-
+            
+            
             // push single product into final response array
-            array_push($response["hanghoa"], $product);
+            array_push($response["loaihang"], $product);
         }
         // success
         $response["success"] = 1;

@@ -55,11 +55,11 @@ public function registerUser($name, $email, $password) {
   	}
 }
 ////// thêm hoàng hóa
-public function themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
+public function themnhanvien($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
 
 	$db = $this -> db;
 
-	if (!empty($MaHH) && !empty($MaNcc) && !empty($MaLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu)&& !empty($Soluong)) {
+	if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu)&& !empty($Soluong)) {
 
   		if ($db -> checkManv($MaHH)) {
 
@@ -68,7 +68,7 @@ public function themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $So
   			return json_encode($response);
 
   		} else {
-  			$result = $db -> insertHanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
+  			$result = $db -> insertHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
 
   			if ($result) {
 
@@ -90,8 +90,74 @@ public function themnhanvien($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $So
 
   	}
 }
+//themloaihang
+public function themloaihang($TenLh, $Ghichu) {
+
+	$db = $this -> db;
+
+	if (!empty($TenLh) && !empty($Ghichu)) {
+
+  		if ($db -> checkLoaihh($TenLh)) {
+
+  			$response["result"] = "failure";
+  			$response["message"] = "Tên loại hàng hóa đã tồn tại !";
+  			return json_encode($response);
+
+  		} else {
+  			$result = $db -> insertLoaihang($TenLh, $Ghichu);
+
+  			if ($result) {
+
+				  $response["result"] = "success";
+  				$response["message"] = "Thêm tên loại hàng thành công !";
+  				return json_encode($response);
+
+  			} else {
+
+  				$response["result"] = "failure";
+  				$response["message"] = "Registration Failure";
+  				return json_encode($response);
+
+  			}
+  		}
+  	} else {
+
+  		return $this -> getMsgParamNotEmpty();
+
+  	}
+}
+//nhacungcap
+public function themnhacungcap($TenNcc, $Diachi , $Sdt) {
+
+	$db = $this -> db;
+
+	if ( !empty($TenNcc) && !empty($Diachi) && !empty($Sdt)) {
+
+  		
+  			$result = $db -> insertNhacungcap( $TenNcc, $Diachi , $Sdt);
+
+  			if ($result) {
+
+				  $response["result"] = "success";
+  				$response["message"] = "Thêm thông tin nhà cung cấp thành công !";
+  				return json_encode($response);
+
+  			} else {
+
+  				$response["result"] = "failure";
+  				$response["message"] = "Registration Failure";
+  				return json_encode($response);
+
+  			}
+  		
+  	} else {
+
+  		return $this -> getMsgParamNotEmpty();
+
+  	}
+}
 ///thêm nhân viên
-public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $Chucvu) {
+public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $Chucvu ) {
 
 	$db = $this -> db;
 
@@ -162,56 +228,79 @@ public function themmenu($MaMn, $TenLh, $Giatien) {
 
   	}
 }
-public function suanhanvien($manv, $tennv, $sdt, $diachi)
+//xoahh
+public function xoahanghoa1($MaHH)
 {
     $db = $this->db;
 
-    if (!empty($manv) && !empty($tennv) && !empty($sdt) && !empty($diachi)) {
-        if (!$db->checkManv($manv)) {
-            $response["result"] = "failure";
-            $response["message"] = "Ma nv khong ton tai!";
-            return json_encode($response);
-        } else {
-            $result = $db->updateThongtin($manv, $tennv, $sdt, $diachi);
+    $result = $db -> xoahh($MaHH);
+    
+    if ($result) {
+        $response["result"] = "success";
+        $response["message"] = "Xóa thông tin hàng hóa thành công !";
+    } 
+    
+    return json_encode($response);
+}
+//xoancc  
+public function xoancc1($MaNcc)
+{
+    $db = $this->db;
+
+    $result = $db -> xoancc2($MaNcc);
+    
+    if ($result) {
+        $response["result"] = "success";
+        $response["message"] = "Xóa thông tin nhà cung cấp thành công !";
+    } 
+    
+    return json_encode($response);
+}
+
+
+
+public function suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong)
+{
+    $db = $this->db;
+
+    if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong)) {
+        
+            $result = $db->updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
 
             if ($result) {
                 $response["result"] = "success";
-                $response["message"] = "Sua thong tin nv thanh cong!";
+                $response["message"] = "Sua thong tin thanh cong!";
                 return json_encode($response);
             } else {
                 $response["result"] = "failure";
-                $response["message"] = "Sua thong tin nv that bai";
+                $response["message"] = "Sua thong tin that bai";
                 return json_encode($response);
             }
         }
-    } else {
-        return $this->getMsgParamNotEmpty();
+        else {
+           return $this->getMsgParamNotEmpty();
     }
 }
-public function xoanhanvien($manv)
+public function suanhacc($MaNcc, $TenNcc, $Diachi , $Sdt)
 {
     $db = $this->db;
 
-    if (!empty($manv)) {
-        if (!$db->checkManv($manv)) {
-            $response["result"] = "failure";
-            $response["message"] = "Ma nv khong ton tai!";
-            return json_encode($response);
-        } else {
-            $result = $db->deleteThongtin($manv);
+    if (!empty($MaNcc) && !empty($TenNcc) && !empty($Diachi) && !empty($Sdt)) {
+        
+            $result = $db->updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt);
 
             if ($result) {
                 $response["result"] = "success";
-                $response["message"] = "Xoa nhan vien thanh cong!";
+                $response["message"] = "Sua thong tin thanh cong!";
                 return json_encode($response);
             } else {
                 $response["result"] = "failure";
-                $response["message"] = "Xoa nhan vien that bai";
+                $response["message"] = "Sua thong tin that bai";
                 return json_encode($response);
             }
         }
-    } else {
-        return $this->getMsgParamNotEmpty();
+        else {
+           return $this->getMsgParamNotEmpty();
     }
 }
 
