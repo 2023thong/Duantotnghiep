@@ -26,7 +26,7 @@ try {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             // temp user array
             $product = array();
-            $product["TenLh"] = $row["TenLh"];
+            $product["TenDu"] = $row["TenDu"];
             $product["Giatien"] = $row["Giatien"];
             
             

@@ -161,15 +161,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       //thêm đồ uống
       if($operation == 'themmenu'){
 
-  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenLh) 
+  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenDu) 
         && isset($data -> menu -> Giatien)
   				){
 
   				$menu = $data -> menu;
   				$MaMn = $menu -> MaMn;
-          $TenLh = $menu -> TenLh;
+          $TenLh = $menu -> TenDu;
           $Giatien = $menu -> Giatien;
-            echo $fun -> themmenu($MaMn, $TenLh, $Giatien);
+            echo $fun -> themmenu($MaMn, $TenDu, $Giatien);
           } 
           else {
 
