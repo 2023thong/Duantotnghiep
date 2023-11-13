@@ -11,6 +11,7 @@ class DBOperations{
 public function __construct() {
 
 	$this -> conn = new PDO("mysql:host=".$this -> host.";dbname=".$this -> db, $this -> user, $this -> pass);
+    
 
 }
 
@@ -82,6 +83,42 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
 
     return $result; 
 }
+//oder
+public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai) {
+    $sql = "INSERT INTO oder (MaBn, TongTien, MaMn, TrangThai) VALUES (:MaBn, :TongTien, :MaMn, :TrangThai)";
+    
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaBn' => $MaBn,
+        ':TongTien' => $TongTien,
+        ':MaMn' => $MaMn,
+        ':TrangThai' => $TrangThai,
+    ));
+
+    $MaOder = $this->conn->lastInsertId();
+
+    // Trả về MaOder
+    return $MaOder;
+}
+
+public function insertOderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn) {
+    $sql = "INSERT INTO thongtinoder (MaOder, TenDu, Soluong, Giatien, MaBn) VALUES (:MaOder, :TenDu, :Soluong, :Giatien, :MaBn)";
+    
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        ':MaOder' => $MaOder,
+        ':TenDu' => $TenDu,
+        ':Soluong' => $Soluong,
+        ':Giatien' => $Giatien,
+        ':MaBn' => $MaBn,
+    ));
+    
+    // Return the result of the insert operation, true for success or false for failure
+    return $result; 
+}
+
+
+
 //loaihang
 public function insertLoaihang($TenLh, $Ghichu) {
     
@@ -533,5 +570,9 @@ public function verifyHash($password, $hash) {
 
     return password_verify ($password, $hash);
 }
+public function beginTransaction() {
+    return $this->conn->beginTransaction();
+}
+
 }
 

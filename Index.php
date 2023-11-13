@@ -65,6 +65,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             echo $fun->getMsgInvalidParam();
         }
     }
+    //oder
+    if ($operation == 'oder') {
+      if (isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaBn) && isset($data->oder1->TongTien)
+          && isset($data->oder1->MaMn) && isset($data->oder1->TrangThai)) {
+  
+          $oder1 = $data->oder1;
+          $MaBn = $oder1->MaBn;
+          $TongTien = $oder1->TongTien;
+          $MaMn = $oder1->MaMn;
+          $TrangThai = $oder1->TrangThai;
+  
+          // Sử dụng $path để lưu trữ đường dẫn ảnh
+          echo $fun->oder($MaBn, $TongTien, $MaMn, $TrangThai);
+  
+      } else {
+          echo $fun->getMsgInvalidParam();
+      }
+  }
+  //oderchitiet
+  if ($operation == 'oderchitiet') {
+    if (isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaOder) && isset($data->oder1->TenDu)
+    && isset($data->oder1->Soluong) && isset($data->oder1->Giatien)
+    && isset($data->oder1->MaBn)) {
+
+    $oder1 = $data->oder1;
+    $MaOder = $oder1->MaOder;
+    $TenDu = $oder1->TenDu;
+    $Soluong = $oder1->Soluong;
+    $Giatien = $oder1->Giatien;
+    $MaBn = $oder1->MaBn;
+    
+    // Call oderchitiet function with extracted parameters
+    echo $fun->oderchitiet($MaOder,$TenDu, $Soluong, $Giatien, $MaBn);
+}
+
+    else {
+        echo $fun->getMsgInvalidParam();
+    }
+}
+  
     //suanhacc
     if($operation == 'suanhacc'){
       if(isset($data->user2) && !empty($data->user2) && isset($data->user2->MaNcc) && isset($data->user2->TenNcc) 

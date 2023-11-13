@@ -20,7 +20,7 @@ try {
             // temp user array
             $product = array();
             $product["MaMn"] = $row["MaMn"];
-            $product["TenLh"] = $row["TenLh"];
+            $product["TenDu"] = $row["TenDu"];
             $product["Giatien"] = $row["Giatien"];
             // push single product into final response array
             array_push($response["menu"], $product);
