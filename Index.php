@@ -300,7 +300,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       $user = $data -> user;
       $MaNv = $user -> MaNv;
 
-      echo $fun -> timnhavien1($MaNv);
+      echo $fun -> timnhanvien($MaNv);
 
     } else {
 
@@ -311,15 +311,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       //thêm đồ uống
       if($operation == 'themmenu'){
 
-  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenLh) 
+  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenDu) 
         && isset($data -> menu -> Giatien)
   				){
 
   				$menu = $data -> menu;
   				$MaMn = $menu -> MaMn;
-          $TenLh = $menu -> TenLh;
+          $TenDu = $menu -> TenDu;
           $Giatien = $menu -> Giatien;
-            echo $fun -> themmenu($MaMn, $TenLh, $Giatien);
+            echo $fun -> themmenu($MaMn, $TenDu, $Giatien);
           } 
           else {
 
@@ -329,15 +329,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       }else if ($operation == 'suamenu') {
         if (
             isset($data->menu) && !empty($data->menu) &&
-            isset($data->menu->MaMn) && isset($data->menu->TenLh) &&
+            isset($data->menu->MaMn) && isset($data->menu->TenDu) &&
             isset($data->menu->Giatien)
         ) {
             $menu = $data->menu;
             $MaMn = $menu->MaMn;
-            $TenLh = $menu->TenLh;
+            $TenDu = $menu->TenDu;
             $Giatien = $menu->Giatien;
     
-            echo $fun->suamenu($MaMn, $TenLh, $Giatien);
+            echo $fun->suamenu($MaMn, $TenDu, $Giatien);
         } else {
             echo $fun->getMsgInvalidParam();
         }
@@ -357,8 +357,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
       $menu = $data -> menu;
       $MaMn = $menu -> MaMn;
-
-      echo $fun -> timnmenu($MaMn);
+      echo $fun -> timmenu($MaMn);
 
     } else {
 
