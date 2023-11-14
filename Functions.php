@@ -95,37 +95,36 @@ public function oder($MaBn, $TongTien, $MaMn, $TrangThai) {
   $db = $this->db;
 
   if (!empty($MaBn) && !empty($TongTien) && !empty($MaMn) && !empty($TrangThai)) {
+    $MaOder = $db->insertOder($MaBn, $TongTien, $MaMn, $TrangThai);
 
-    $result = $db -> insertOder($MaBn, $TongTien, $MaMn, $TrangThai);
-    if ($result) {
-
+    if ($MaOder) {
       $response["result"] = "success";
-      $response["message"] = "Oder đồ uống thành công";
+      $response["message"] = "Lưu thành công đồ uống";
+      $response["MaOder"] = $MaOder; // Assign MaOder to the response
       return json_encode($response);
-
     } else {
-
       $response["result"] = "failure";
       $response["message"] = "Registration Failure";
       return json_encode($response);
-
     }
-      
   }
 
   return $this->getMsgParamNotEmpty();
 }
+
+
+
 //oderchitiet
 public function oderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn) {
   $db = $this->db;
 
-  if ( !empty($MaBn) && !empty($MaBn)  && !empty($TenDu)&& !empty($Soluong) && !empty($Giatien)) {
+  if ( !empty($MaOder) && !empty($MaBn)  && !empty($TenDu)&& !empty($Soluong) && !empty($Giatien)) {
 
     $result = $db -> insertOderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn);
     if ($result) {
 
       $response["result"] = "success";
-      $response["message"] = "Oder thành công chitiet";
+      $response["message"] = "Oder đồ uống thành công";
       return json_encode($response);
 
     } else {
