@@ -44,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       ///thêm hàng hóa
 
       if($operation == 'thongtinvn'){
-
-    
         if(isset($data->user1) && !empty($data->user1) && isset($data->user1->MaHH) && isset($data->user1->MaNcc) 
             && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong)){
             
@@ -104,53 +102,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         echo $fun->getMsgInvalidParam();
     }
 }
-  
-    //suanhacc
-    if($operation == 'suanhacc'){
-      if(isset($data->user2) && !empty($data->user2) && isset($data->user2->MaNcc) && isset($data->user2->TenNcc) 
-          && isset($data->user2->Diachi)&& isset($data->user2->Sdt)){
-          
-          $user2 = $data->user2;
-          $MaNcc = $user2->MaNcc;
-          $TenNcc = $user2->TenNcc;
-          $Diachi = $user2->Diachi;
-          $Sdt = $user2->Sdt;
-          
-  
-          // Sử dụng $path để lưu trữ đường dẫn ảnh
-          echo $fun->suanhacc($MaNcc, $TenNcc, $Diachi , $Sdt);
-      } 
-      else {
-          echo $fun->getMsgInvalidParam();
+else if ($operation == 'thanhtoan') {
+  if (
+      isset($data->thongtinoder) && !empty($data->thongtinoder) &&
+      isset($data->thongtinoder->MaOder) && isset($data->thongtinoder->TrangThai)
+      
+  ) {
+      $thongtinoder = $data->thongtinoder;
+      $MaOder = $thongtinoder->MaOder;
+      $TrangThai = $thongtinoder->TrangThai;
+     
 
-
-  			if(isset($data -> user1 ) && !empty($data -> user1) && isset($data -> user1 -> MaHH) && isset($data -> user1 -> MaNcc) 
-        && isset($data -> user1 -> TenLh) && isset($data -> user1 -> TenHh) && isset($data -> user1 -> GiaSp) && isset($data -> user1 -> Ghichu) && isset($data -> user1 -> Soluong) 
-  				){
-
-  				$user1 = $data -> user1;
-  				$MaHH = $user1 -> MaHH;
-          $MaNcc = $user1 -> MaNcc;
-          $MaLh = $user1 -> TenLh;
-          $TenHh = $user1 -> TenHh;
-          $GiaSp = $user1 -> GiaSp;
-          $Ghichu = $user1 -> Ghichu;
-          $Soluong = $user1 -> Soluong;
-
-  				
-
-          
-            echo $fun -> themnhanvien($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
-
-          } 
-          else {
-
-  				echo $fun -> getMsgInvalidParam();
-
-  			}
-
-      }
+      echo $fun->suathanhtoan($MaOder, $TrangThai);
+  } else {
+      echo $fun->getMsgInvalidParam();
   }
+}
+
+//suaoder
+if($operation == 'suaoder'){
+  if(isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaOder) && isset($data->oder1->TongTien)
+  && isset($data->oder1->TrangThai)){
+      
+    $oder1 = $data->oder1;
+    $MaOder = $oder1->MaOder;
+    $TongTien = $oder1->TongTien;
+    $TrangThai = $oder1->TrangThai;
+      
+
+      // Sử dụng $path để lưu trữ đường dẫn ảnh
+      echo $fun->suaoder($MaOder, $TongTien, $TrangThai);
+  } 
+  else {
+    echo $fun->getMsgInvalidParam();
+}
+}
+//suathongtinoder
+if($operation == 'suathongtinoder'){
+  if(isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaOder) && isset($data->oder1->TenDu)
+  && isset($data->oder1->Soluong) && isset($data->oder1->Giatien)
+  && isset($data->oder1->MaBn)){
+      
+    $oder1 = $data->oder1;
+    $MaOder = $oder1->MaOder;
+    $TenDu = $oder1->TenDu;
+    $Soluong = $oder1->Soluong;
+    $Giatien = $oder1->Giatien;
+    $MaBn = $oder1->MaBn;
+      
+
+      // Sử dụng $path để lưu trữ đường dẫn ảnh
+      echo $fun->suathontinoder($MaOder, $TenDu, $Soluong, $Giatien, $MaBn);
+  } 
+  else {
+    echo $fun->getMsgInvalidParam();
+}
+}
+  
+      
     //themloaihh
     if($operation == 'themloaihang'){
         
@@ -185,6 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           echo $fun->getMsgInvalidParam();
       }
   }
+
   
     
       // xoahh

@@ -137,6 +137,56 @@ public function insertLoaihang($TenLh, $Ghichu) {
 
     return $result; 
 }
+//capnhat
+public function updateOder($MaOder, $TongTien, $TrangThai )
+{
+    $sql = 'UPDATE oder
+            SET TongTien = :TongTien, TrangThai = :TrangThai
+            Where MaOder = :MaOder ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaOder' => $MaOder,
+        ':TongTien' => $TongTien,
+        ':TrangThai' => $TrangThai
+        
+    ));
+
+    return $query->rowCount() > 0;
+}
+//chapnhatthongtinoder
+public function updatethongtinoder($MaOder, $TenDu, $Soluong, $Giatien, $MaBn)
+{
+    $sql = 'UPDATE thongtinoder
+            SET TenDu = :TenDu, Soluong = :Soluong, Giatien = :Giatien, MaBn = :MaBn
+            WHERE MaOder = :MaOder ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaOder' => $MaOder,
+        ':TenDu' => $TenDu,
+        ':Soluong' => $Soluong,
+        ':Giatien' => $Giatien,
+        ':MaBn' => $MaBn
+    ));
+
+    return $query->rowCount() > 0;
+}
+public function updateThanhtoan($MaOder, $TrangThai)
+{
+    $sql = 'UPDATE oder
+            SET TrangThai = :TrangThai
+            WHERE MaOder = :MaOder';    
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaOder' => $MaOder,
+        ':TrangThai' => $TrangThai,
+       
+    ));
+
+    return $query->rowCount() > 0;
+}
 //suanhacc
 public function updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt)
 {

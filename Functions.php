@@ -137,8 +137,74 @@ public function oderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn) {
       
   }
 
-  return $this->getMsgParamNotEmpty();
+  return $this->getMsgParamNotEmpty1();
 }
+
+//sửa menu
+public function suaoder($MaOder, $TongTien, $TrangThai)
+{
+    $db = $this->db;
+
+    if (!empty($MaOder) && !empty($TongTien)&& !empty($TrangThai)) {
+         {
+            $result = $db->updateOder($MaOder, $TongTien, $TrangThai);
+
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = "Sửa Oder thành công";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Sua thong Oder thất bại";
+                return json_encode($response);
+            }
+        }
+    } else {
+        return $this->getMsgParamNotEmpty();
+    }
+}
+
+//sửa menu
+public function suathontinoder($MaOder, $TenDu, $Soluong, $Giatien, $MaBn)
+{
+    $db = $this->db;
+
+    if (!empty($MaOder) && !empty($TenDu)&& !empty($Soluong) && !empty($Giatien)&& !empty($MaBn)) {
+         {
+            $result = $db->updatethongtinoder($MaOder, $TenDu, $Soluong, $Giatien, $MaBn);
+
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = "Sửa thông tin oder thành công";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Sửa thông tin Oder thất bại";
+                return json_encode($response);
+            }
+        }
+    } else {
+        return $this->getMsgParamNotEmpty();
+    }
+}
+public function suathanhtoan($MaOder, $TrangThai)
+{
+    $db = $this->db;
+    
+            $result = $db->updateThanhtoan($MaOder, $TrangThai);
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = " Thành công";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Sua thong tin nv that bai";
+                return json_encode($response);
+            }
+        
+     
+    
+  }
 
 
 
@@ -737,6 +803,16 @@ public function getMsgParamNotEmpty(){
   return json_encode($response);
 
 }
+//thongbaosoder
+public function getMsgParamNotEmpty1(){
+
+
+  $response["result"] = "failure";
+  $response["message"] = "Lưu trước khi Oder";
+  return json_encode($response);
+
+}
+
 
 public function getMsgInvalidParam(){
 
