@@ -158,6 +158,42 @@ if($operation == 'suathongtinoder'){
     echo $fun->getMsgInvalidParam();
 }
 }
+if($operation == 'themban'){
+
+  if(isset($data -> ban ) && !empty($data -> ban) && isset($data -> ban -> MaBn) && isset($data -> ban -> TenBan) 
+  && isset($data -> ban -> Trangthai)
+    ){
+
+    $ban = $data -> ban;
+    $MaBn = $ban -> MaBn;
+    $TenBan = $ban -> TenBan;
+    $Trangthai = $ban -> Trangthai;
+      echo $fun -> themban($MaBn, $TenBan, $Trangthai);
+    } 
+    else {
+
+    echo $fun -> getMsgInvalidParam();
+
+  }
+}
+if($operation == 'suaban'){
+
+  if(isset($data -> ban ) && !empty($data -> ban) && isset($data -> ban -> MaBn) 
+  && isset($data -> ban -> Trangthai)
+    ){
+
+    $ban = $data -> ban;
+    $MaBn = $ban -> MaBn;
+   
+    $Trangthai = $ban -> Trangthai;
+      echo $fun -> suaban($MaBn,  $Trangthai);
+    } 
+    else {
+
+    echo $fun -> getMsgInvalidParam();
+
+  }
+}
   
       
     //themloaihh

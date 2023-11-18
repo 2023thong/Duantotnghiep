@@ -179,13 +179,48 @@ public function updateThanhtoan($MaOder, $TrangThai)
             WHERE MaOder = :MaOder';    
 
     $query = $this->conn->prepare($sql);
-    $query->execute(array(
+    $query->execute(array( 
         ':MaOder' => $MaOder,
         ':TrangThai' => $TrangThai,
        
     ));
 
     return $query->rowCount() > 0;
+}
+//thêm bàn
+public function insertBan($MaBn, $TenBan, $Trangthai) {
+    // $unique_id = uniqid('', true);
+
+    $sql = 'INSERT INTO ban (MaBn, TenBan, Trangthai) VALUES (:MaBn, :TenBan, :Trangthai)';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaBn' => $MaBn,
+        ':TenBan' => $TenBan,
+        ':Trangthai' => $Trangthai,
+
+    ));
+
+    return $result; 
+}
+public function updateban1($MaBn,  $Trangthai) {
+    // $unique_id = uniqid('', true);
+
+    $sql = 'UPDATE ban
+    SET  Trangthai = :Trangthai
+    Where MaBn = :MaBn';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaBn' => $MaBn,
+       
+        ':Trangthai' => $Trangthai,
+
+    ));
+
+    return $result; 
 }
 //suanhacc
 public function updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt)

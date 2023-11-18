@@ -163,6 +163,68 @@ public function suaoder($MaOder, $TongTien, $TrangThai)
         return $this->getMsgParamNotEmpty();
     }
 }
+public function themban($MaBn, $TenBan, $Trangthai) {
+
+	$db = $this -> db;
+
+	if (!empty($MaBn) && !empty($TenBan) && !empty($Trangthai)) {
+
+  		if ($db -> checkManv($MaBn)) {
+
+  			$response["result"] = "failure";
+  			$response["message"] = "Mã bàn đã tồn tại !";
+  			return json_encode($response);
+
+  		} else {
+  			$result = $db -> insertBan($MaBn, $TenBan, $Trangthai);
+
+  			if ($result) {
+
+				  $response["result"] = "success";
+  				$response["message"] = "Thêm thông tin thành công !";
+  				return json_encode($response);
+
+  			} else {
+
+  				$response["result"] = "failure";
+  				$response["message"] = "Thêm thông tin thất bại!";
+  				return json_encode($response);
+
+  			}
+  		}
+  	} else {
+
+  		return $this -> getMsgParamNotEmpty();
+
+  	}
+}
+public function suaban($MaBn,  $Trangthai) {
+
+	$db = $this -> db;
+
+	if (!empty($MaBn)  && !empty($Trangthai)) {
+
+
+  			$result = $db -> updateban1($MaBn,  $Trangthai);
+
+  			if ($result) {
+
+				  
+
+  			} else {
+
+  				$response["result"] = "failure";
+  				$response["message"] = "Thêm thông tin thất bại!";
+  				return json_encode($response);
+
+  			}
+  		
+  	} else {
+
+  		return $this -> getMsgParamNotEmpty();
+
+  	}
+}
 
 //sửa menu
 public function suathontinoder($MaOder, $TenDu, $Soluong, $Giatien, $MaBn)
