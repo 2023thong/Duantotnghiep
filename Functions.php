@@ -91,11 +91,11 @@ public function themnhanvien($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $S
   	}
 }
 //oder
-public function oder($MaBn, $TongTien, $MaMn, $TrangThai) {
+public function oder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay) {
   $db = $this->db;
 
-  if (!empty($MaBn) && !empty($TongTien) && !empty($MaMn) && !empty($TrangThai)) {
-    $MaOder = $db->insertOder($MaBn, $TongTien, $MaMn, $TrangThai);
+  if (!empty($MaBn) && !empty($TongTien) && !empty($MaMn) && !empty($TrangThai) && !empty($Ngay)) {
+    $MaOder = $db->insertOder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay);
 
     if ($MaOder) {
       $response["result"] = "success";
@@ -106,6 +106,7 @@ public function oder($MaBn, $TongTien, $MaMn, $TrangThai) {
       $response["result"] = "failure";
       $response["message"] = "Registration Failure";
       return json_encode($response);
+
     }
   }
 
@@ -373,11 +374,11 @@ public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $
   	}
 }
 //Thêm đồ uống
-public function themmenu($MaMn, $TenLh, $Giatien) {
+public function themmenu($MaMn, $TenDu, $Giatien) {
 
 	$db = $this -> db;
 
-	if (!empty($MaMn) && !empty($TenLh)&& !empty($Giatien)) {
+	if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)) {
 
   		if ($db -> checkMaMn($MaMn)) {
 
@@ -386,7 +387,7 @@ public function themmenu($MaMn, $TenLh, $Giatien) {
   			return json_encode($response);
 
   		} else {
-  			$result = $db -> insertMenu($MaMn, $TenLh , $Giatien);
+  			$result = $db -> insertMenu($MaMn, $TenDu , $Giatien);
 
   			if ($result) {
 
@@ -472,17 +473,17 @@ public function suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Sol
 }
 
 //sửa menu
-public function suamenu($MaMn, $TenLh,$Giatien)
+public function suamenu($MaMn, $TenDu,$Giatien)
 {
     $db = $this->db;
 
-    if (!empty($MaMn) && !empty($TenLh)&& !empty($Giatien)) {
+    if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)) {
         if (!$db->checkMaMn($MaMn)) {
             $response["result"] = "failure";
             $response["message"] = "Ma menu khong ton tai!";
             return json_encode($response);
         } else {
-            $result = $db->updatemenu($MaMn, $TenLh,$Giatien);
+            $result = $db->suamenu($MaMn, $TenDu,$Giatien);
 
             if ($result) {
                 $response["result"] = "success";
@@ -559,7 +560,7 @@ public function suanhanvien1($MaNv, $TenNv,$TenDn, $Matkhau, $Sdt, $Diachi, $Chu
             return json_encode($response);
         } 
          
-            $result = $db->updatenhanvien($MaNv, $TenNv,$TenDn, $Matkhau, $Sdt, $Diachi, $Chucvu);
+            $result = $db->suanhanvien1($MaNv, $TenNv,$TenDn, $Matkhau, $Sdt, $Diachi, $Chucvu);
 
             if ($result) {
                 $response["result"] = "success";
@@ -731,11 +732,11 @@ public function resetPasswordRequest($email){
 
 }
 //timnv
-public function timnhavien1($MaNv){
+public function timnhanvien($MaNv){
 
   $db = $this -> db;
 
-  if ($db -> checkUserExist($MaNv)) {
+  if ($db -> checkMaNv1($MaNv)) {
 
     $result =  $db -> timnhanvien($MaNv);
 
@@ -748,9 +749,8 @@ public function timnhavien1($MaNv){
     } else {
 
       if($result){
-
         $response["result"] = "success";
-        $response["message"] = "Đã thấy nhân viên";
+        $response["message"] = "Đã tìm thấy nhân viên";
         return json_encode($response);
 
       } else {
@@ -760,8 +760,44 @@ public function timnhavien1($MaNv){
         return json_encode($response);
       }
     }
+  } else {
 
+    $response["result"] = "failure";
+    $response["message"] = "Email does not exist";
+    return json_encode($response);
 
+  }
+
+}
+//tìm menu
+public function timmenu($MaMn){
+
+  $db = $this -> db;
+
+  if ($db -> checkMaMn($MaMn)) {
+
+    $result =  $db -> timmenu($MaMn);
+
+    if(!$result){
+
+      $response["result"] = "failure";
+      $response["message"] = "Không thấy đồ uống";
+      return json_encode($response);
+
+    } else {
+
+      if($result){
+        $response["result"] = "success";
+        $response["message"] = "Đã tìm thấy đồ uống";
+        return json_encode($response);
+
+      } else {
+
+        $response["result"] = "failure";
+        $response["message"] = "Reset Password Failure";
+        return json_encode($response);
+      }
+    }
   } else {
 
     $response["result"] = "failure";

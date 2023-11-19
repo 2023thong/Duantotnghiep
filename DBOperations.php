@@ -84,8 +84,8 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
     return $result; 
 }
 //oder
-public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai) {
-    $sql = "INSERT INTO oder (MaBn, TongTien, MaMn, TrangThai) VALUES (:MaBn, :TongTien, :MaMn, :TrangThai)";
+public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay) {
+    $sql = "INSERT INTO oder (MaBn, TongTien, MaMn, TrangThai, Ngay) VALUES (:MaBn, :TongTien, :MaMn, :TrangThai , :Ngay)";
     
     $query = $this->conn->prepare($sql);
     $query->execute(array(
@@ -93,6 +93,8 @@ public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai) {
         ':TongTien' => $TongTien,
         ':MaMn' => $MaMn,
         ':TrangThai' => $TrangThai,
+        ':Ngay' => $Ngay,
+
     ));
 
     $MaOder = $this->conn->lastInsertId();
@@ -240,6 +242,44 @@ public function updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt)
 
     return $query->rowCount() > 0;
 }
+//sửa menu
+public function suamenu($MaMn, $TenDu, $Giatien)
+{
+    $sql = 'UPDATE menu
+            SET TenDu = :TenDu, Giatien = :Giatien
+            Where MaMn = :MaMn ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaMn' => $MaMn,
+        ':TenDu' => $TenDu,
+        ':Giatien' => $Giatien
+        
+    ));
+
+    return $query->rowCount() > 0;
+}
+//sửa nhân viên
+public function suanhanvien1($MaNv, $TenNv, $TenDn,$Matkhau,$Sdt,$Diachi,$Chucvu)
+{
+    $sql = 'UPDATE nhanvien
+            SET TenNv = :TenNv, TenDn = :TenDn, Matkhau = :Matkhau, Sdt = :Sdt, Diachi = :Diachi, Chucvu = :Chucvu
+            Where MaNv = :MaNv ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaNv' => $MaNv,
+        ':TenNv' => $TenNv,
+        ':TenDn' => $TenDn,
+        ':Matkhau' => $Matkhau,
+        ':Sdt' => $Sdt,
+        ':Diachi' => $Diachi,
+        ':Chucvu' => $Chucvu
+    
+    ));
+
+    return $query->rowCount() > 0;
+}
 //xoa hh
 public function xoahh($MaHH) {
     
@@ -253,32 +293,16 @@ public function xoahh($MaHH) {
 }
 //xoanhacc  ;
 public function xoancc2($MaNcc) {
-    try {
-        $this->conn->beginTransaction();
+    
 
-        // Kiểm tra ràng buộc khóa ngoại trước khi xóa
-        $sqlCheck = 'SELECT COUNT(*) FROM hanghoa WHERE MaNcc = :MaNcc';
-        $queryCheck = $this->conn->prepare($sqlCheck);
-        $queryCheck->execute(array(':MaNcc' => $MaNcc));
-        $count = $queryCheck->fetchColumn();
+    $sql = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
 
-        if ($count > 0) {
-            $this->conn->rollback();
-            return false;
-        }
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaNcc' => $MaNcc));
 
-        // Xóa nhà cung cấp nếu không có ràng buộc khóa ngoại
-        $sqlDelete = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
-        $queryDelete = $this->conn->prepare($sqlDelete);
-        $queryDelete->execute(array(':MaNcc' => $MaNcc));
-
-        $this->conn->commit();
-        return true;
-    } catch (PDOException $e) {
-        $this->conn->rollback();
-        return false;
-    }
+    return $query->rowCount() > 0; 
 }
+
 
 public function insertNhacungcap($TenNcc, $Diachi, $Sdt) {
     $sql = 'INSERT INTO nhacungcap (TenNcc, Diachi, Sdt) VALUES (:TenNcc, :Diachi, :Sdt)';
@@ -310,14 +334,14 @@ public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$C
     return $result; 
 }
 //thêm đồ uống
-public function insertMenu($MaMn, $TenLh, $Giatien) {
+public function insertMenu($MaMn, $TenDu, $Giatien) {
     // $unique_id = uniqid('', true);
-    $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
+    $sql = 'INSERT INTO menu (MaMn, TenDu, Giatien) VALUES (:MaMn, :TenDu, :Giatien)';
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
         // ':unique_id' => $unique_id,
         ':MaMn' => $MaMn,
-        ':TenLh' => $TenLh,
+        ':TenDu' => $TenDu,
         ':Giatien' => $Giatien,
     ));
     return $result; 
@@ -364,6 +388,7 @@ public function checkLogin($TenDn, $Matkhau) {
         return false;
     }
 }
+
 public function updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong)
 {
     $sql = 'UPDATE hanghoa
@@ -405,8 +430,8 @@ public function checkPermission($Chucvu) {
 
     return $data;
 }
-//sửa nhan viên
-public function updatenhanvien($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chucvu)
+//sua
+ public function updateThongtin($manv, $tennv, $sdt, $diachi)
 {
     $sql = 'UPDATE nhanvien
             SET TenNv = :TenNv, TenDn = :TenDn, Matkhau = :Matkhau,Sdt = :Sdt,Diachi = :Diachi,Chucvu = :Chucvu

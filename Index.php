@@ -66,16 +66,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     //oder
     if ($operation == 'oder') {
       if (isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaBn) && isset($data->oder1->TongTien)
-          && isset($data->oder1->MaMn) && isset($data->oder1->TrangThai)) {
+          && isset($data->oder1->MaMn) && isset($data->oder1->TrangThai) && isset($data->oder1->Ngay)) {
   
           $oder1 = $data->oder1;
           $MaBn = $oder1->MaBn;
           $TongTien = $oder1->TongTien;
           $MaMn = $oder1->MaMn;
           $TrangThai = $oder1->TrangThai;
+          $Ngay = $oder1->Ngay;
   
           // Sử dụng $path để lưu trữ đường dẫn ảnh
-          echo $fun->oder($MaBn, $TongTien, $MaMn, $TrangThai);
+          echo $fun->oder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay);
   
       } else {
           echo $fun->getMsgInvalidParam();
@@ -386,7 +387,7 @@ if($operation == 'suaban'){
       $user = $data -> user;
       $MaNv = $user -> MaNv;
 
-      echo $fun -> timnhavien1($MaNv);
+      echo $fun -> timnhanvien($MaNv);
 
     } else {
 
@@ -397,15 +398,15 @@ if($operation == 'suaban'){
       //thêm đồ uống
       if($operation == 'themmenu'){
 
-  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenLh) 
+  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenDu) 
         && isset($data -> menu -> Giatien)
   				){
 
   				$menu = $data -> menu;
   				$MaMn = $menu -> MaMn;
-          $TenLh = $menu -> TenLh;
+          $TenDu = $menu -> TenDu;
           $Giatien = $menu -> Giatien;
-            echo $fun -> themmenu($MaMn, $TenLh, $Giatien);
+            echo $fun -> themmenu($MaMn, $TenDu, $Giatien);
           } 
           else {
 
@@ -415,15 +416,15 @@ if($operation == 'suaban'){
       }else if ($operation == 'suamenu') {
         if (
             isset($data->menu) && !empty($data->menu) &&
-            isset($data->menu->MaMn) && isset($data->menu->TenLh) &&
+            isset($data->menu->MaMn) && isset($data->menu->TenDu) &&
             isset($data->menu->Giatien)
         ) {
             $menu = $data->menu;
             $MaMn = $menu->MaMn;
-            $TenLh = $menu->TenLh;
+            $TenDu = $menu->TenDu;
             $Giatien = $menu->Giatien;
     
-            echo $fun->suamenu($MaMn, $TenLh, $Giatien);
+            echo $fun->suamenu($MaMn, $TenDu, $Giatien);
         } else {
             echo $fun->getMsgInvalidParam();
         }
@@ -443,8 +444,7 @@ if($operation == 'suaban'){
 
       $menu = $data -> menu;
       $MaMn = $menu -> MaMn;
-
-      echo $fun -> timnmenu($MaMn);
+      echo $fun -> timmenu($MaMn);
 
     } else {
 
