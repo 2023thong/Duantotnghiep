@@ -80,8 +80,8 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
     return $result; 
 }
 //oder
-public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai) {
-    $sql = "INSERT INTO oder (MaBn, TongTien, MaMn, TrangThai) VALUES (:MaBn, :TongTien, :MaMn, :TrangThai)";
+public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay) {
+    $sql = "INSERT INTO oder (MaBn, TongTien, MaMn, TrangThai, Ngay) VALUES (:MaBn, :TongTien, :MaMn, :TrangThai , :Ngay)";
     
     $query = $this->conn->prepare($sql);
     $query->execute(array(
@@ -89,6 +89,8 @@ public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai) {
         ':TongTien' => $TongTien,
         ':MaMn' => $MaMn,
         ':TrangThai' => $TrangThai,
+        ':Ngay' => $Ngay,
+
     ));
 
     $MaOder = $this->conn->lastInsertId();
@@ -175,13 +177,48 @@ public function updateThanhtoan($MaOder, $TrangThai)
             WHERE MaOder = :MaOder';    
 
     $query = $this->conn->prepare($sql);
-    $query->execute(array(
+    $query->execute(array( 
         ':MaOder' => $MaOder,
         ':TrangThai' => $TrangThai,
        
     ));
 
     return $query->rowCount() > 0;
+}
+//thêm bàn
+public function insertBan($MaBn, $TenBan, $Trangthai) {
+    // $unique_id = uniqid('', true);
+
+    $sql = 'INSERT INTO ban (MaBn, TenBan, Trangthai) VALUES (:MaBn, :TenBan, :Trangthai)';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaBn' => $MaBn,
+        ':TenBan' => $TenBan,
+        ':Trangthai' => $Trangthai,
+
+    ));
+
+    return $result; 
+}
+public function updateban1($MaBn,  $Trangthai) {
+    // $unique_id = uniqid('', true);
+
+    $sql = 'UPDATE ban
+    SET  Trangthai = :Trangthai
+    Where MaBn = :MaBn';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        // ':unique_id' => $unique_id,
+        ':MaBn' => $MaBn,
+       
+        ':Trangthai' => $Trangthai,
+
+    ));
+
+    return $result; 
 }
 //suanhacc
 public function updateNhacungcap($MaNcc, $TenNcc, $Diachi , $Sdt)
@@ -281,6 +318,8 @@ public function xoancc2($MaNcc) {
 //xóa menu
 public function xoamenu($MaMn) {
     
+
+
     $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
 
     $query = $this->conn->prepare($sql);
@@ -299,6 +338,7 @@ public function xoanhanvien($MaNv) {
 
     return $query->rowCount() > 0; 
 }
+
 public function insertNhacungcap($TenNcc, $Diachi, $Sdt) {
     $sql = 'INSERT INTO nhacungcap (TenNcc, Diachi, Sdt) VALUES (:TenNcc, :Diachi, :Sdt)';
     $query = $this->conn->prepare($sql);
@@ -425,6 +465,7 @@ public function checkPermission($Chucvu) {
 
     return $data;
 }
+
 //timmenu
  public function timmenu($MaMn) {
     $sql = 'SELECT * FROM menu WHERE MaMn = :MaMn';
@@ -434,8 +475,10 @@ public function checkPermission($Chucvu) {
 
     return $data;
 }
+//sua
 //sửa nhan viên
-public function updatenhanvien($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chucvu){
+public function updatenhanvien($MaNv, $TenNv, $TenDn, $Matkhau,$Sdt,$Diachi,$Chucvu)
+{
     $sql = 'UPDATE nhanvien
             SET TenNv = :TenNv, TenDn = :TenDn, Matkhau = :Matkhau,Sdt = :Sdt,Diachi = :Diachi,Chucvu = :Chucvu
             WHERE MaNv = :MaNv';
