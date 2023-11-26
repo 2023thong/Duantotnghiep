@@ -103,6 +103,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         echo $fun->getMsgInvalidParam();
     }
 }
+//hoadon
+if ($operation == 'hoadon1') {
+  if (isset($data->hoadon) && !empty($data->hoadon) && isset($data->hoadon->MaBn) && isset($data->hoadon->MaOder)
+  && isset($data->hoadon->Trangthai) && isset($data->hoadon->Thoigian) && isset($data->hoadon->TongTien)) {
+
+  $hoadon = $data->hoadon;
+  $MaBn = $hoadon->MaBn;
+  $MaOder = $hoadon->MaOder;
+  $Trangthai = $hoadon->Trangthai;
+  $Thoigian = $hoadon->Thoigian;
+  $TongTien = $hoadon->TongTien;
+  // Call oderchitiet function with extracted parameters
+  echo $fun->hoadon($MaBn,$MaOder, $Trangthai, $Thoigian, $TongTien );
+}
+
+  else {
+      echo $fun->getMsgInvalidParam();
+  }
+}
+//hoadonchitiet
+if ($operation == 'hoadonchitiet') {
+  if (isset($data->chitiethoadon) && !empty($data->chitiethoadon) && isset($data->chitiethoadon->MaHd) && isset($data->chitiethoadon->TenLh)
+  && isset($data->chitiethoadon->SoLuong) && isset($data->chitiethoadon->GiaTien)) {
+
+  $chitiethoadon = $data->chitiethoadon;
+  $MaHd = $chitiethoadon->MaHd;
+  $TenLh = $chitiethoadon->TenLh;
+  $SoLuong = $chitiethoadon->SoLuong;
+  $GiaTien = $chitiethoadon->GiaTien;
+  // Call oderchitiet function with extracted parameters
+  echo $fun->hoadonchitiet($MaHd,$TenLh, $SoLuong, $GiaTien);
+}
+
+  else {
+      echo $fun->getMsgInvalidParam2();
+  }
+}
+
 else if ($operation == 'thanhtoan') {
   if (
       isset($data->thongtinoder) && !empty($data->thongtinoder) &&

@@ -37,6 +37,8 @@ try {
             $product["MaBn"] = $row["MaBn"];
             $product["MaMn"] = $row["MaMn"];
             $product["TongTien"] = $row["TongTien"];
+            $product["Ngay"] = $row["Ngay"];
+            
         
             
             

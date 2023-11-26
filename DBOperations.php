@@ -15,31 +15,6 @@ public function __construct() {
 
 }
 
-
- public function insertData($name,$email,$password){
-
- 	$unique_id = uniqid('', true);
-    $hash = $this->getHash($password);
-    $encrypted_password = $hash["encrypted"];
-	$salt = $hash["salt"];
-
- 	$sql = 'INSERT INTO users SET unique_id =:unique_id,name =:name,
-    email =:email,encrypted_password =:encrypted_password,salt =:salt,created_at = NOW()';
-
- 	$query = $this ->conn ->prepare($sql);
- 	$query->execute(array('unique_id' => $unique_id, ':name' => $name, ':email' => $email,
-     ':encrypted_password' => $encrypted_password, ':salt' => $salt));
-
-    if ($query) {
-
-        return true;
-
-    } else {
-
-        return false;
-
-    }
- }
  //sửa menu
 public function updatemenu($MaMn, $TenLh, $Giatien)
 {
@@ -76,13 +51,32 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
         ':GiaSp' => $GiaSp,
         ':Ghichu' => $Ghichu,
         ':Soluong' => $Soluong,
-        
+    
 
 
     ));
 
     return $result; 
 }
+//thêm hoa đơn
+public function themhoadon($MaBn, $MaOder,  $Trangthai, $Thoigian, $TongTien) {
+    $sql = 'INSERT INTO hoadon (MaBn, MaOder,  Trangthai, Thoigian, TongTien) VALUES (:MaBn, :MaOder, :Trangthai, :Thoigian, :TongTien)';
+    
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaBn' => $MaBn,
+        ':MaOder' => $MaOder,
+        ':Trangthai' => $Trangthai,
+        ':Thoigian' => $Thoigian,
+        ':TongTien' => $TongTien,
+    ));
+
+    $MaHd = $this->conn->lastInsertId();
+
+    // Trả về MaOder
+    return $MaHd;
+}
+
 //oder
 public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay) {
     $sql = "INSERT INTO oder (MaBn, TongTien, MaMn, TrangThai, Ngay) VALUES (:MaBn, :TongTien, :MaMn, :TrangThai , :Ngay)";
@@ -115,9 +109,26 @@ public function insertOderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn) {
         ':MaBn' => $MaBn,
     ));
     
+    
+    return $result; 
+}
+
+//hoadonchitiet
+public function hoadonchitiet1($MaHd,$TenLh, $SoLuong, $GiaTien) {
+    $sql = "INSERT INTO chitiethoadon (MaHd, TenLh, SoLuong, GiaTien) VALUES (:MaHd, :TenLh, :SoLuong, :GiaTien)";
+    
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        ':MaHd' => $MaHd,
+        ':TenLh' => $TenLh,
+        ':SoLuong' => $SoLuong,
+        ':GiaTien' => $GiaTien,
+    ));
+    
     // Return the result of the insert operation, true for success or false for failure
     return $result; 
 }
+
 
 
 

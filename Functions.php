@@ -140,6 +140,54 @@ public function oderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn) {
 
   return $this->getMsgParamNotEmpty1();
 }
+//hoadon
+public function hoadon($MaBn,$MaOder, $Trangthai, $Thoigian , $TongTien ) {
+  $db = $this->db;
+
+  if (!empty($MaBn) && !empty($MaOder) && !empty($Trangthai)  && !empty($Thoigian)&& !empty($TongTien)) {
+    $MaHd = $db->themhoadon($MaBn,$MaOder,  $Trangthai, $Thoigian, $TongTien );
+
+    if ($MaHd) {
+      $response["result"] = "success";
+      $response["message"] = "Lưu thành công đồ uống";
+      $response["MaHd"] = $MaHd; 
+      return json_encode($response);
+    } else {
+      $response["result"] = "failure";
+      $response["message"] = "Registration Failure";
+      return json_encode($response);
+
+    }
+  }
+
+  return $this->getMsgParamNotEmpty();
+}
+//hoadonchitiet
+public function hoadonchitiet($MaHd,$TenLh, $SoLuong, $GiaTien) {
+  $db = $this->db;
+
+  if ( !empty($MaHd) && !empty($TenLh)  && !empty($SoLuong)&& !empty($GiaTien) ) {
+
+    $result = $db -> hoadonchitiet1($MaHd,$TenLh, $SoLuong, $GiaTien);
+    if ($result) {
+      $response["result"] = "success";
+      $response["message"] = "111";
+      return json_encode($response);
+    
+    
+
+    } else {
+
+      $response["result"] = "failure";
+      $response["message"] = "Registration Failure";
+      return json_encode($response);
+
+    }
+      
+  }
+
+  return $this->getMsgParamNotEmpty();
+}
 
 //sửa menu
 public function suaoder($MaOder, $TongTien, $TrangThai)
@@ -907,6 +955,13 @@ public function getMsgParamNotEmpty1(){
 
   $response["result"] = "failure";
   $response["message"] = "Lưu trước khi Oder";
+  return json_encode($response);
+
+}
+public function getMsgInvalidParam2(){
+
+  $response["result"] = "failure";
+  $response["message"] = "Lưu hóa đơn trước khi oder";
   return json_encode($response);
 
 }
