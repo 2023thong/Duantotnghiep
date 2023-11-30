@@ -19,11 +19,6 @@ try {
     $stmt = $pdo->query($query);
 
     // 
-     
-
-   
-
-
     // check for empty result
     if ($stmt->rowCount() > 0) {
         // products node
@@ -38,10 +33,6 @@ try {
             $product["MaMn"] = $row["MaMn"];
             $product["TongTien"] = $row["TongTien"];
             $product["Ngay"] = $row["Ngay"];
-        
-            
-            
-
             // push single product into final response array
             array_push($response["oder"], $product);
         }

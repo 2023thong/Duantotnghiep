@@ -14,7 +14,7 @@ try {
 
     // Check if 'maOder' parameter is set
     if (isset($_GET['MaOder'])) {
-        $maOder = $_GET['MaOder']; // Get the 'maOder' parameter from the URL
+        $MaOder = $_GET['MaOder']; // Get the 'maOder' parameter from the URL
 
         // Get the products with the specified 'MaOder' value
         $query = "SELECT * FROM thongtinoder WHERE MaOder = :MaOder";
