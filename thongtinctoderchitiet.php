@@ -1,9 +1,5 @@
 <?php
-/*
- * Following code will list all the products or a specific product by 'MaOder' value.
- */
 
-// Array for JSON response
 $response = array();
 
 try {
