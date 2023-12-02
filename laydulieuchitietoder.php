@@ -8,22 +8,23 @@ try {
     $pdo = new PDO("mysql:host=" . DB_SERVER .";dbname=" . DB_DATABASE, DB_USER, DB_PASSWORD);
 
     // get all products from products table
-    $query = "SELECT * FROM menu";
+    $query = "SELECT * FROM thongtinoder";
     $stmt = $pdo->query($query);
 
     // check for empty result
     if ($stmt->rowCount() > 0) {
         // products node
-        $response["menu"] = array();
+        $response["thongtinoder"] = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             // temp user array
             $product = array();
-            $product["MaMn"] = $row["MaMn"];
+            $product["MaOder"] = $row["MaOder"];
             $product["TenDu"] = $row["TenDu"];
+            $product["Soluong"] = $row["Soluong"];
             $product["Giatien"] = $row["Giatien"];
             // push single product into final response array
-            array_push($response["menu"], $product);
+            array_push($response["thongtinoder"], $product);
         }
         // success
         $response["success"] = 1;

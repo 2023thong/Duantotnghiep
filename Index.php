@@ -44,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       ///thêm hàng hóa
 
       if($operation == 'thongtinvn'){
-
-    
         if(isset($data->user1) && !empty($data->user1) && isset($data->user1->MaHH) && isset($data->user1->MaNcc) 
             && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong)){
             
@@ -65,52 +63,178 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             echo $fun->getMsgInvalidParam();
         }
     }
-    //suanhacc
-    if($operation == 'suanhacc'){
-      if(isset($data->user2) && !empty($data->user2) && isset($data->user2->MaNcc) && isset($data->user2->TenNcc) 
-          && isset($data->user2->Diachi)&& isset($data->user2->Sdt)){
-          
-          $user2 = $data->user2;
-          $MaNcc = $user2->MaNcc;
-          $TenNcc = $user2->TenNcc;
-          $Diachi = $user2->Diachi;
-          $Sdt = $user2->Sdt;
-          
+    //oder
+    if ($operation == 'oder') {
+      if (isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaBn) && isset($data->oder1->TongTien)
+          && isset($data->oder1->MaMn) && isset($data->oder1->TrangThai) && isset($data->oder1->Ngay)) {
+  
+          $oder1 = $data->oder1;
+          $MaBn = $oder1->MaBn;
+          $TongTien = $oder1->TongTien;
+          $MaMn = $oder1->MaMn;
+          $TrangThai = $oder1->TrangThai;
+          $Ngay = $oder1->Ngay;
   
           // Sử dụng $path để lưu trữ đường dẫn ảnh
-          echo $fun->suanhacc($MaNcc, $TenNcc, $Diachi , $Sdt);
-      } 
-      else {
+          echo $fun->oder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay);
+  
+      } else {
           echo $fun->getMsgInvalidParam();
-
-
-  			if(isset($data -> user1 ) && !empty($data -> user1) && isset($data -> user1 -> MaHH) && isset($data -> user1 -> MaNcc) 
-        && isset($data -> user1 -> TenLh) && isset($data -> user1 -> TenHh) && isset($data -> user1 -> GiaSp) && isset($data -> user1 -> Ghichu) && isset($data -> user1 -> Soluong) 
-  				){
-
-  				$user1 = $data -> user1;
-  				$MaHH = $user1 -> MaHH;
-          $MaNcc = $user1 -> MaNcc;
-          $MaLh = $user1 -> TenLh;
-          $TenHh = $user1 -> TenHh;
-          $GiaSp = $user1 -> GiaSp;
-          $Ghichu = $user1 -> Ghichu;
-          $Soluong = $user1 -> Soluong;
-
-  				
-
-          
-            echo $fun -> themnhanvien($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
-
-          } 
-          else {
-
-  				echo $fun -> getMsgInvalidParam();
-
-  			}
-
       }
   }
+  //oderchitiet
+  if ($operation == 'oderchitiet') {
+    if (isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaOder) && isset($data->oder1->TenDu)
+    && isset($data->oder1->Soluong) && isset($data->oder1->Giatien)
+    && isset($data->oder1->MaBn)) {
+
+    $oder1 = $data->oder1;
+    $MaOder = $oder1->MaOder;
+    $TenDu = $oder1->TenDu;
+    $Soluong = $oder1->Soluong;
+    $Giatien = $oder1->Giatien;
+    $MaBn = $oder1->MaBn;
+    
+    // Call oderchitiet function with extracted parameters
+    echo $fun->oderchitiet($MaOder,$TenDu, $Soluong, $Giatien, $MaBn);
+}
+
+    else {
+        echo $fun->getMsgInvalidParam();
+    }
+}
+//hoadon
+if ($operation == 'hoadon1') {
+  if (isset($data->hoadon) && !empty($data->hoadon) && isset($data->hoadon->MaBn) && isset($data->hoadon->MaOder)
+  && isset($data->hoadon->Trangthai) && isset($data->hoadon->Thoigian) && isset($data->hoadon->TongTien)) {
+
+  $hoadon = $data->hoadon;
+  $MaBn = $hoadon->MaBn;
+  $MaOder = $hoadon->MaOder;
+  $Trangthai = $hoadon->Trangthai;
+  $Thoigian = $hoadon->Thoigian;
+  $TongTien = $hoadon->TongTien;
+  // Call oderchitiet function with extracted parameters
+  echo $fun->hoadon($MaBn,$MaOder, $Trangthai, $Thoigian, $TongTien );
+}
+
+  else {
+      echo $fun->getMsgInvalidParam();
+  }
+}
+//hoadonchitiet
+if ($operation == 'hoadonchitiet') {
+  if (isset($data->chitiethoadon) && !empty($data->chitiethoadon) && isset($data->chitiethoadon->MaHd) && isset($data->chitiethoadon->TenLh)
+  && isset($data->chitiethoadon->SoLuong) && isset($data->chitiethoadon->GiaTien)) {
+
+  $chitiethoadon = $data->chitiethoadon;
+  $MaHd = $chitiethoadon->MaHd;
+  $TenLh = $chitiethoadon->TenLh;
+  $SoLuong = $chitiethoadon->SoLuong;
+  $GiaTien = $chitiethoadon->GiaTien;
+  // Call oderchitiet function with extracted parameters
+  echo $fun->hoadonchitiet($MaHd,$TenLh, $SoLuong, $GiaTien);
+}
+
+  else {
+      echo $fun->getMsgInvalidParam2();
+  }
+}
+
+else if ($operation == 'thanhtoan') {
+  if (
+      isset($data->thongtinoder) && !empty($data->thongtinoder) &&
+      isset($data->thongtinoder->MaOder) && isset($data->thongtinoder->TrangThai)
+      
+  ) {
+      $thongtinoder = $data->thongtinoder;
+      $MaOder = $thongtinoder->MaOder;
+      $TrangThai = $thongtinoder->TrangThai;
+     
+
+      echo $fun->suathanhtoan($MaOder, $TrangThai);
+  } else {
+      echo $fun->getMsgInvalidParam();
+  }
+}
+
+//suaoder
+if($operation == 'suaoder'){
+  if(isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaOder) && isset($data->oder1->TongTien)
+  && isset($data->oder1->TrangThai)){
+      
+    $oder1 = $data->oder1;
+    $MaOder = $oder1->MaOder;
+    $TongTien = $oder1->TongTien;
+    $TrangThai = $oder1->TrangThai;
+      
+
+      // Sử dụng $path để lưu trữ đường dẫn ảnh
+      echo $fun->suaoder($MaOder, $TongTien, $TrangThai);
+  } 
+  else {
+    echo $fun->getMsgInvalidParam();
+}
+}
+//suathongtinoder
+if($operation == 'suathongtinoder'){
+  if(isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaOder) && isset($data->oder1->TenDu)
+  && isset($data->oder1->Soluong) && isset($data->oder1->Giatien)
+  && isset($data->oder1->MaBn)){
+      
+    $oder1 = $data->oder1;
+    $MaOder = $oder1->MaOder;
+    $TenDu = $oder1->TenDu;
+    $Soluong = $oder1->Soluong;
+    $Giatien = $oder1->Giatien;
+    $MaBn = $oder1->MaBn;
+      
+
+      // Sử dụng $path để lưu trữ đường dẫn ảnh
+      echo $fun->suathontinoder($MaOder, $TenDu, $Soluong, $Giatien, $MaBn);
+  } 
+  else {
+    echo $fun->getMsgInvalidParam();
+}
+}
+if($operation == 'themban'){
+
+  if(isset($data -> ban ) && !empty($data -> ban) && isset($data -> ban -> MaBn) && isset($data -> ban -> TenBan) 
+  && isset($data -> ban -> Trangthai)
+    ){
+
+    $ban = $data -> ban;
+    $MaBn = $ban -> MaBn;
+    $TenBan = $ban -> TenBan;
+    $Trangthai = $ban -> Trangthai;
+      echo $fun -> themban($MaBn, $TenBan, $Trangthai);
+    } 
+    else {
+
+    echo $fun -> getMsgInvalidParam();
+
+  }
+}
+if($operation == 'suaban'){
+
+  if(isset($data -> ban ) && !empty($data -> ban) && isset($data -> ban -> MaBn) 
+  && isset($data -> ban -> Trangthai)
+    ){
+
+    $ban = $data -> ban;
+    $MaBn = $ban -> MaBn;
+   
+    $Trangthai = $ban -> Trangthai;
+      echo $fun -> suaban($MaBn,  $Trangthai);
+    } 
+    else {
+
+    echo $fun -> getMsgInvalidParam();
+
+  }
+}
+  
+      
     //themloaihh
     if($operation == 'themloaihang'){
         
@@ -145,6 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           echo $fun->getMsgInvalidParam();
       }
   }
+
   
     
       // xoahh
@@ -300,7 +425,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       $user = $data -> user;
       $MaNv = $user -> MaNv;
 
-      echo $fun -> timnhavien1($MaNv);
+      echo $fun -> timnhanvien($MaNv);
 
     } else {
 
@@ -311,15 +436,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       //thêm đồ uống
       if($operation == 'themmenu'){
 
-  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenLh) 
+  			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenDu) 
         && isset($data -> menu -> Giatien)
   				){
 
   				$menu = $data -> menu;
   				$MaMn = $menu -> MaMn;
-          $TenLh = $menu -> TenLh;
+          $TenDu = $menu -> TenDu;
           $Giatien = $menu -> Giatien;
-            echo $fun -> themmenu($MaMn, $TenLh, $Giatien);
+            echo $fun -> themmenu($MaMn, $TenDu, $Giatien);
           } 
           else {
 
@@ -329,15 +454,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       }else if ($operation == 'suamenu') {
         if (
             isset($data->menu) && !empty($data->menu) &&
-            isset($data->menu->MaMn) && isset($data->menu->TenLh) &&
+            isset($data->menu->MaMn) && isset($data->menu->TenDu) &&
             isset($data->menu->Giatien)
         ) {
             $menu = $data->menu;
             $MaMn = $menu->MaMn;
-            $TenLh = $menu->TenLh;
+            $TenDu = $menu->TenDu;
             $Giatien = $menu->Giatien;
     
-            echo $fun->suamenu($MaMn, $TenLh, $Giatien);
+            echo $fun->suamenu($MaMn, $TenDu, $Giatien);
         } else {
             echo $fun->getMsgInvalidParam();
         }
@@ -357,8 +482,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
       $menu = $data -> menu;
       $MaMn = $menu -> MaMn;
-
-      echo $fun -> timnmenu($MaMn);
+      echo $fun -> timmenu($MaMn);
 
     } else {
 
