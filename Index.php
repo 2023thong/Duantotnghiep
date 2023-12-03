@@ -498,7 +498,6 @@ if($operation == 'suaban'){
         $user = $data->user;
         $TenDn = $user->TenDn;
         $Matkhau = $user->Matkhau;
-
         echo $fun->loginUser($TenDn, $Matkhau);
     } else {
         echo $fun->getMsgInvalidParam();
@@ -559,4 +558,3 @@ if($operation == 'suaban'){
   echo "Learn2Crack Login API";
 
 }
-
