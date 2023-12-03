@@ -29,9 +29,8 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
         ':TenLh' => $TenLh,
         ':Giatien' => $Giatien
     ));
-    }
+    
  }
-
 //xóa menu
  public function xoamenu($MaMn) {
     $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
@@ -41,12 +40,6 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
 
     return $query->rowCount()>0;
 }
-
-
-    return $query->rowCount() > 0;
-}
-	
-
 
  //thêm hàng hóa
  public function insertHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
@@ -482,15 +475,6 @@ public function xoanhanvien($MaNv) {
 
     return $query->rowCount()>0;
 }
-//xóa menu
- public function xoamenu($MaMn) {
-    $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(':MaMn' => $MaMn));
-    // $data = $query->fetch(PDO::FETCH_ASSOC);
-
-    return $query->rowCount()>0;
-}
 
  public function doimatkhau($TenDn, $Matkhau) {
     
@@ -706,5 +690,4 @@ public function verifyHash($password, $hash) {
 public function beginTransaction() {
     return $this->conn->beginTransaction();
 }
-
 }
