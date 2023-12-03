@@ -16,6 +16,36 @@ public function __construct() {
 }
 
 
+ //sửa menu
+public function updatemenu($MaMn, $TenLh, $Giatien)
+{
+    $sql = 'UPDATE menu
+            SET TenLh = :TenLh, Giatien = :Giatien
+            WHERE MaMn = :MaMn';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaMn' => $MaMn,
+        ':TenLh' => $TenLh,
+        ':Giatien' => $Giatien
+    ));
+    }
+ }
+
+//xóa menu
+ public function xoamenu($MaMn) {
+    $sql = 'DELETE FROM menu WHERE MaMn = :MaMn';
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':MaMn' => $MaMn));
+    // $data = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $query->rowCount()>0;
+}
+
+
+    return $query->rowCount() > 0;
+}
+	
 
 
  //thêm hàng hóa
