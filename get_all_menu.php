@@ -22,6 +22,7 @@ try {
             $product["MaMn"] = $row["MaMn"];
             $product["TenDu"] = $row["TenDu"];
             $product["Giatien"] = $row["Giatien"];
+            $product["TenLh"] = $row["TenLh"];
             // push single product into final response array
             array_push($response["menu"], $product);
         }

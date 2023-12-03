@@ -422,11 +422,11 @@ public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $
   	}
 }
 //Thêm đồ uống
-public function themmenu($MaMn, $TenDu, $Giatien) {
+public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh) {
 
 	$db = $this -> db;
 
-	if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)) {
+	if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien) && !empty($TenLh)) {
 
   		if ($db -> checkMaMn($MaMn)) {
 
@@ -435,7 +435,7 @@ public function themmenu($MaMn, $TenDu, $Giatien) {
   			return json_encode($response);
 
   		} else {
-  			$result = $db -> insertMenu($MaMn, $TenDu , $Giatien);
+  			$result = $db -> themmenu($MaMn, $TenDu , $Giatien, $TenLh);
 
   			if ($result) {
 
@@ -521,17 +521,17 @@ public function suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Sol
 }
 
 //sửa menu
-public function suamenu($MaMn, $TenDu,$Giatien)
+public function suamenu($MaMn, $TenDu,$Giatien,$TenLh)
 {
     $db = $this->db;
 
-    if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)) {
+    if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)&& !empty($TenLh)) {
         if (!$db->checkMaMn($MaMn)) {
             $response["result"] = "failure";
             $response["message"] = "Ma menu khong ton tai!";
             return json_encode($response);
         } else {
-            $result = $db->suamenu($MaMn, $TenDu,$Giatien);
+            $result = $db->suamenu($MaMn, $TenDu,$Giatien,$TenLh);
 
             if ($result) {
                 $response["result"] = "success";
