@@ -42,14 +42,11 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
 }
 
  //thêm hàng hóa
- public function insertHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
-    
-
-    $sql = 'INSERT INTO hanghoa ( MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong) VALUES ( :MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
+ public function insertHanghoa($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imagePath) {
+    $sql = 'INSERT INTO hanghoa (MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong, imagePath) VALUES (:MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong, :imagePath)';
 
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
-        
         ':MaHH' => $MaHH,
         ':MaNcc' => $MaNcc,
         ':TenLh' => $TenLh,
@@ -57,13 +54,12 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
         ':GiaSp' => $GiaSp,
         ':Ghichu' => $Ghichu,
         ':Soluong' => $Soluong,
-    
-
-
+        ':imagePath' => $imagePath,
     ));
 
-    return $result; 
+    return $result;
 }
+
 //thêm hoa đơn
 public function themhoadon($MaBn, $MaOder,  $Trangthai, $Thoigian, $TongTien) {
     $sql = 'INSERT INTO hoadon (MaBn, MaOder,  Trangthai, Thoigian, TongTien) VALUES (:MaBn, :MaOder, :Trangthai, :Thoigian, :TongTien)';
@@ -308,14 +304,16 @@ public function xoahh($MaHH) {
 }
 //xoanhacc  ;
 public function xoancc2($MaNcc) {
-    
-
     $sql = 'DELETE FROM nhacungcap WHERE MaNcc = :MaNcc';
 
-    $query = $this->conn->prepare($sql);
-    $query->execute(array(':MaNcc' => $MaNcc));
+    try {
+        $query = $this->conn->prepare($sql);
+        $query->execute(array(':MaNcc' => $MaNcc));
 
-    return $query->rowCount() > 0; 
+        return $query->rowCount() > 0;
+    } catch (PDOException $e) {
+        return false; // Just return false for simplicity, handle errors in xoancc1
+    }
 }
 
 

@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   		}
       ///thêm hàng hóa
 
-      if($operation == 'thongtinvn'){
-        if(isset($data->user1) && !empty($data->user1) && isset($data->user1->MaHH) && isset($data->user1->MaNcc) 
-            && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong)){
-            
+      if ($operation == 'thongtinvn') {
+        if (isset($data->user1) && !empty($data->user1) && isset($data->user1->MaHH) && isset($data->user1->MaNcc)
+            && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong) && isset($data->user1->imageBase64)) {
+    
             $user1 = $data->user1;
             $MaHH = $user1->MaHH;
             $MaNcc = $user1->MaNcc;
@@ -55,14 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             $GiaSp = $user1->GiaSp;
             $Ghichu = $user1->Ghichu;
             $Soluong = $user1->Soluong;
-    
+            $imageBase64 = $user1->imageBase64;
+  
             // Sử dụng $path để lưu trữ đường dẫn ảnh
-            echo $fun->themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong);
-        } 
-        else {
+            echo $fun->themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imageBase64);
+        } else {
             echo $fun->getMsgInvalidParam();
         }
     }
+    
     //oder
     if ($operation == 'oder') {
       if (isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaBn) && isset($data->oder1->TongTien)
