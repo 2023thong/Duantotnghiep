@@ -8,12 +8,11 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-if (!empty($_GET['MaNv'])) {
-    $MaNv = mysqli_real_escape_string($con, $_GET['MaNv']); // Sanitize input to prevent SQL injection
+if (!empty($_GET['MaMn'])) {
+    $MaMn = mysqli_real_escape_string($con, $_GET['MaMn']); // Sanitize input to prevent SQL injection
 
-    $selectSql = "SELECT Hinhanh FROM nhanvien WHERE MaNv = '$MaNv'";
+    $selectSql = "SELECT Hinhanh FROM menu WHERE MaMn = '$MaMn'";
     $result = mysqli_query($con, $selectSql);
-
     if ($result) {
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
@@ -29,13 +28,13 @@ if (!empty($_GET['MaNv'])) {
                 echo "Image not found";
             }
         } else {
-            echo "No image found for the provided MaNv";
+            echo "No image found for the provided MaMn";
         }
     } else {
         echo "Database query error: " . mysqli_error($con);
     }
 } else {
-    echo "Missing MaNv parameter";
+    echo "Missing MaMn parameter";
 }
 
 // Đóng kết nối MySQL sau khi hoàn tất
