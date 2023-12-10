@@ -79,6 +79,23 @@ public function themhoadon($MaBn, $MaOder,  $Trangthai, $Thoigian, $TongTien) {
     return $MaHd;
 }
 
+public function suahoadon2($MaOder, $TongTien)
+{
+    $sql = 'UPDATE hoadon
+            SET TongTien = :TongTien
+            Where MaOder = :MaOder ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaOder' => $MaOder,
+        ':TongTien' => $TongTien
+        
+     
+    ));
+
+    return $query->rowCount() > 0;
+}
+
 //oder
 public function insertOder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay) {
     $sql = "INSERT INTO oder (MaBn, TongTien, MaMn, TrangThai, Ngay) VALUES (:MaBn, :TongTien, :MaMn, :TrangThai , :Ngay)";
@@ -116,20 +133,6 @@ public function insertOderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn) {
 }
 
 //hoadonchitiet
-public function hoadonchitiet1($MaHd,$TenLh, $SoLuong, $GiaTien) {
-    $sql = "INSERT INTO chitiethoadon (MaHd, TenLh, SoLuong, GiaTien) VALUES (:MaHd, :TenLh, :SoLuong, :GiaTien)";
-    
-    $query = $this->conn->prepare($sql);
-    $result = $query->execute(array(
-        ':MaHd' => $MaHd,
-        ':TenLh' => $TenLh,
-        ':SoLuong' => $SoLuong,
-        ':GiaTien' => $GiaTien,
-    ));
-    
-    // Return the result of the insert operation, true for success or false for failure
-    return $result; 
-}
 
 
 

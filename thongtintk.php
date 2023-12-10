@@ -28,6 +28,7 @@ try {
             $product = array();
             $product["TenDu"] = $row["TenDu"];
             $product["Giatien"] = $row["Giatien"];
+            $product["MaMn"] = $row["MaMn"];
             
             
 
