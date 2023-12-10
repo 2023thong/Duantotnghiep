@@ -19,7 +19,9 @@ public function __construct() {
 
 
 
-////// thêm hoàng hóa
+
+
+
 public function themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imageBase64) {
 
   $db = $this->db;
@@ -133,30 +135,28 @@ public function hoadon($MaBn,$MaOder, $Trangthai, $Thoigian , $TongTien ) {
   return $this->getMsgParamNotEmpty();
 }
 //hoadonchitiet
-public function hoadonchitiet($MaHd,$TenLh, $SoLuong, $GiaTien) {
-  $db = $this->db;
 
-  if ( !empty($MaHd) && !empty($TenLh)  && !empty($SoLuong)&& !empty($GiaTien) ) {
+public function suahoadon1($MaOder, $TongTien)
+{
+    $db = $this->db;
 
-    $result = $db -> hoadonchitiet1($MaHd,$TenLh, $SoLuong, $GiaTien);
-    if ($result) {
-      $response["result"] = "success";
-      $response["message"] = "111";
-      return json_encode($response);
-    
-    
+    if (!empty($MaOder) && !empty($TongTien)) {
+         {
+            $result = $db->suahoadon2($MaOder, $TongTien);
 
+            if ($result) {
+                $response["result"] = "success";
+                $response["message"] = "Sửa hóa đơn thành công";
+                return json_encode($response);
+            } else {
+                $response["result"] = "failure";
+                $response["message"] = "Sua hóa đơn thất bại";
+                return json_encode($response);
+            }
+        }
     } else {
-
-      $response["result"] = "failure";
-      $response["message"] = "Registration Failure";
-      return json_encode($response);
-
+        return $this->getMsgParamNotEmpty();
     }
-      
-  }
-
-  return $this->getMsgParamNotEmpty();
 }
 
 //sửa menu
@@ -480,7 +480,7 @@ public function suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Sol
 {
     $db = $this->db;
 
-    if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong)) {
+    if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong) ) {
         
             $result = $db->updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
 
@@ -915,7 +915,7 @@ public function getMsgParamNotEmpty(){
 
 
   $response["result"] = "failure";
-  $response["message"] = "Thông tin không được để trống !";
+  $response["message"] = "Thông tin không được để trống ";
   return json_encode($response);
 
 }
@@ -940,7 +940,14 @@ public function getMsgInvalidParam2(){
 public function getMsgInvalidParam(){
 
   $response["result"] = "failure";
-  $response["message"] = "Vui lòng chọn ảnh";
+  $response["message"] = "Lỗi thông tin";
+  return json_encode($response);
+
+}
+public function getMsgInvalidParam0(){
+
+  $response["result"] = "failure";
+  $response["message"] = "Vui lòng chọn ảnh ";
   return json_encode($response);
 
 }
