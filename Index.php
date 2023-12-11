@@ -42,10 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
   		}
       ///thêm hàng hóa
-
       if($operation == 'thongtinvn'){
         if(isset($data->user1) && !empty($data->user1) && isset($data->user1->MaHH) && isset($data->user1->MaNcc) 
-            && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong)){
+            && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong) && isset($data->user1->imageBase64) ){
             
             $user1 = $data->user1;
             $MaHH = $user1->MaHH;
@@ -55,12 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             $GiaSp = $user1->GiaSp;
             $Ghichu = $user1->Ghichu;
             $Soluong = $user1->Soluong;
-    
+            $imageBase64 = $user1->imageBase64;
+  
             // Sử dụng $path để lưu trữ đường dẫn ảnh
-            echo $fun->themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong);
+            echo $fun->themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong,$imageBase64);
         } 
         else {
-            echo $fun->getMsgInvalidParam();
+            echo $fun->getMsgInvalidParam0();
         }
     }
     //oder
@@ -122,6 +122,25 @@ if ($operation == 'hoadon1') {
       echo $fun->getMsgInvalidParam();
   }
 }
+
+
+if($operation == 'suahoadon'){
+  if(isset($data->hoadon) && !empty($data->hoadon) && isset($data->hoadon->MaOder) && isset($data->hoadon->TongTien)
+  ){
+      
+    $hoadon = $data->hoadon;
+    $MaOder = $hoadon->MaOder;
+    $TongTien = $hoadon->TongTien;
+    
+      
+      echo $fun->suahoadon1($MaOder, $TongTien);
+  } 
+  else {
+    echo $fun->getMsgInvalidParam();
+}
+}
+
+
 //hoadonchitiet
 if ($operation == 'hoadonchitiet') {
   if (isset($data->chitiethoadon) && !empty($data->chitiethoadon) && isset($data->chitiethoadon->MaHd) && isset($data->chitiethoadon->TenLh)
@@ -168,8 +187,6 @@ if($operation == 'suaoder'){
     $TongTien = $oder1->TongTien;
     $TrangThai = $oder1->TrangThai;
       
-
-      // Sử dụng $path để lưu trữ đường dẫn ảnh
       echo $fun->suaoder($MaOder, $TongTien, $TrangThai);
   } 
   else {
@@ -270,8 +287,6 @@ if($operation == 'suaban'){
       }
   }
 
-  
-    
       // xoahh
       if ($operation == 'xoahh') {
         if (isset($data->user1) && !empty($data->user1) && isset($data -> user1 -> MaHH) ) 
@@ -293,7 +308,6 @@ if($operation == 'suaban'){
           echo $fun->getMsgInvalidParam();
       }
   }
-
       else if ($operation == 'sua_hanghoa') {
         if (
             isset($data->user1) && !empty($data->user1) &&
@@ -315,7 +329,6 @@ if($operation == 'suaban'){
             echo $fun->getMsgInvalidParam();
         }
     }
-
      if ($operation == 'xoa_thongtinvn') {
       if (isset($data->user1) && !empty($data->user1) && isset($data->user1->manv)) {
           $manv = $data->user1->manv;
@@ -560,4 +573,3 @@ if($operation == 'suaban'){
   echo "Learn2Crack Login API";
 
 }
-

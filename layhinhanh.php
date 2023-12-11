@@ -22,7 +22,6 @@ if (!empty($_GET['MaNv'])) {
             if (file_exists($imagePath)) {
                 // Set the appropriate headers to indicate that this is an image
                 header('Content-Type: image/jpeg');
-
                 // Output the image data
                 readfile($imagePath);
             } else {

@@ -8,10 +8,10 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-if (!empty($_GET['MaMn'])) {
-    $MaMn = mysqli_real_escape_string($con, $_GET['MaMn']); // Sanitize input to prevent SQL injection
+if (!empty($_GET['TenDu'])) {
+    $TenDu = mysqli_real_escape_string($con, $_GET['TenDu']); // Sanitize input to prevent SQL injection
 
-    $selectSql = "SELECT Hinhanh FROM menu WHERE MaMn = '$MaMn'";
+    $selectSql = "SELECT Hinhanh FROM menu WHERE TenDu = '$TenDu'";
     $result = mysqli_query($con, $selectSql);
     if ($result) {
         if (mysqli_num_rows($result) > 0) {
