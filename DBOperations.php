@@ -349,9 +349,9 @@ public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$C
     return $result; 
 }
 //thêm đồ uống
-public function themmenu($MaMn, $TenDu, $Giatien,$TenLh) {
+public function themmenu($MaMn, $TenDu, $Giatien,$TenLh,$Hinhanh) {
     // $unique_id = uniqid('', true);
-    $sql = 'INSERT INTO menu (MaMn, TenDu, Giatien,TenLh) VALUES (:MaMn, :TenDu, :Giatien,:TenLh)';
+    $sql = 'INSERT INTO menu (MaMn, TenDu, Giatien,TenLh,Hinhanh) VALUES (:MaMn, :TenDu, :Giatien,:TenLh,:Hinhanh)';
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
         // ':unique_id' => $unique_id,
@@ -359,6 +359,7 @@ public function themmenu($MaMn, $TenDu, $Giatien,$TenLh) {
         ':TenDu' => $TenDu,
         ':Giatien' => $Giatien,
         ':TenLh' => $TenLh,
+        ':Hinhanh' => $Hinhanh,
     ));
     return $result; 
 }

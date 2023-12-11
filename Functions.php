@@ -422,11 +422,11 @@ public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $
   	}
 }
 //Thêm đồ uống
-public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh) {
+public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh,$Hinhanh) {
 
 	$db = $this -> db;
 
-	if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien) && !empty($TenLh)) {
+	if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien) && !empty($TenLh)&& !empty($Hinhanh)) {
 
   		if ($db -> checkMaMn($MaMn)) {
 
@@ -435,7 +435,7 @@ public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh) {
   			return json_encode($response);
 
   		} else {
-  			$result = $db -> themmenu($MaMn, $TenDu , $Giatien, $TenLh);
+  			$result = $db -> themmenu($MaMn, $TenDu , $Giatien, $TenLh,$Hinhanh);
 
   			if ($result) {
 

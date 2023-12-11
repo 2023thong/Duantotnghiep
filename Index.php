@@ -437,7 +437,7 @@ if($operation == 'suaban'){
       if($operation == 'themmenu'){
 
   			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenDu) 
-        && isset($data -> menu -> Giatien) && isset($data -> menu -> TenLh)
+        && isset($data -> menu -> Giatien) && isset($data -> menu -> TenLh)&& isset($data -> menu -> Hinhanh)
   				){
 
   				$menu = $data -> menu;
@@ -445,7 +445,8 @@ if($operation == 'suaban'){
           $TenDu = $menu -> TenDu;
           $Giatien = $menu -> Giatien;
           $TenLh = $menu -> TenLh;
-            echo $fun -> themmenu1($MaMn, $TenDu, $Giatien,$TenLh);
+          $Hinhanh = $menu -> Hinhanh;
+            echo $fun -> themmenu1($MaMn, $TenDu, $Giatien,$TenLh,$Hinhanh);
           } 
           else {
 
