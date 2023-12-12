@@ -392,40 +392,44 @@ public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $
   	}
 }
 //Thêm đồ uống
-public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh) {
+public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh,$Hinhanh1) {
 
-	$db = $this -> db;
+  $db = $this->db;
 
-	if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien) && !empty($TenLh)) {
+  if (!empty($MaMn) && !empty($TenDu) && !empty($Giatien) && !empty($TenLh) && !empty($Hinhanh1)) {
 
-  		if ($db -> checkMaMn($MaMn)) {
+      // Decode base64 image data and save it to a file
+      $Hinhanh = 'img1/' . date("d-m-y") . '-' . time() . '-' . rand(10000, 100000) . '.jpg';
 
-  			$response["result"] = "failure";
-  			$response["message"] = "Mã đồ uống đã tồn tại !";
-  			return json_encode($response);
+      if (file_put_contents($Hinhanh, base64_decode($Hinhanh1))) {
 
-  		} else {
-  			$result = $db -> themmenu($MaMn, $TenDu , $Giatien, $TenLh);
+          // Check if MaHH already exists
+          if ($db->checkMaMn($MaMn)) {
+              $response["result"] = "failure";
+              $response["message"] = "Mã menu đã tồn tại";
+              return json_encode($response);
+          } else {
+              // Insert data into the database along with the image path
+              $result = $db->themmenu($MaMn, $TenDu, $Giatien, $TenLh, $Hinhanh);
 
-  			if ($result) {
-
-				  $response["result"] = "success";
-  				$response["message"] = "Thêm thông tin đồ uống thành công !";
-  				return json_encode($response);
-
-  			} else {
-
-  				$response["result"] = "failure";
-  				$response["message"] = "Thêm thông tin đồ uống thất bại!";
-  				return json_encode($response);
-
-  			}
-  		}
-  	} else {
-
-  		return $this -> getMsgParamNotEmpty();
-
-  	}
+              if ($result) {
+                  $response["result"] = "success";
+                  $response["message"] = "Thêm thông tin thành công!";
+                  return json_encode($response);
+              } else {
+                  $response["result"] = "failure";
+                  $response["message"] = "Registration Failure";
+                  return json_encode($response);
+              }
+          }
+      } else {
+          $response["result"] = "failure";
+          $response["message"] = "Lỗi khi lưu tệp ảnh.";
+          return json_encode($response);
+      }
+  } else {
+      return $this->getMsgParamNotEmpty();
+  }
 }
 
 //xoahh

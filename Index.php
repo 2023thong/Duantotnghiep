@@ -450,22 +450,22 @@ if($operation == 'suaban'){
       if($operation == 'themmenu'){
 
   			if(isset($data -> menu ) && !empty($data -> menu) && isset($data -> menu -> MaMn) && isset($data -> menu -> TenDu) 
-        && isset($data -> menu -> Giatien) && isset($data -> menu -> TenLh)
+        && isset($data -> menu -> Giatien) && isset($data -> menu -> TenLh)&& isset($data -> menu -> Hinhanh1)
   				){
-
   				$menu = $data -> menu;
   				$MaMn = $menu -> MaMn;
           $TenDu = $menu -> TenDu;
           $Giatien = $menu -> Giatien;
           $TenLh = $menu -> TenLh;
-            echo $fun -> themmenu1($MaMn, $TenDu, $Giatien,$TenLh);
+          $Hinhanh1 = $menu -> Hinhanh1;
+            echo $fun -> themmenu1($MaMn, $TenDu, $Giatien,$TenLh,$Hinhanh1);
           } 
           else {
-
-  				echo $fun -> getMsgInvalidParam();
+  				echo $fun -> getMsgInvalidParam0();
 
   			}
-      }else if ($operation == 'suamenu') {
+      }
+      else if ($operation == 'suamenu') {
         if (
             isset($data->menu) && !empty($data->menu) &&
             isset($data->menu->MaMn) && isset($data->menu->TenDu) &&
@@ -556,8 +556,6 @@ if($operation == 'suaban'){
       }
 
   	}else{
-
-  		
   		echo $fun -> getMsgParamNotEmpty();
 
   	}
