@@ -20,13 +20,11 @@ public function __construct() {
 
 
 
-
-
-public function themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imageBase64) {
+public function themnhanvien( $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imageBase64) {
 
   $db = $this->db;
 
-  if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong) && !empty($imageBase64)) {
+  if (!empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong) && !empty($imageBase64)) {
 
       // Decode base64 image data and save it to a file
       $imagePath = 'img1/' . date("d-m-y") . '-' . time() . '-' . rand(10000, 100000) . '.jpg';
@@ -34,24 +32,20 @@ public function themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $So
       if (file_put_contents($imagePath, base64_decode($imageBase64))) {
 
           // Check if MaHH already exists
-          if ($db->checkManv($MaHH)) {
-              $response["result"] = "failure";
-              $response["message"] = "Mã hàng hóa đã tồn tại";
-              return json_encode($response);
-          } else {
+        
               // Insert data into the database along with the image path
-              $result = $db->insertHanghoa($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imagePath);
+              $result = $db->insertHanghoa($MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imagePath);
 
               if ($result) {
                   $response["result"] = "success";
-                  $response["message"] = "Thêm thông tin thành công!";
+                  $response["message"] = "Thêm thông tin thành công";
                   return json_encode($response);
               } else {
                   $response["result"] = "failure";
                   $response["message"] = "Registration Failure";
                   return json_encode($response);
               }
-          }
+          
       } else {
           $response["result"] = "failure";
           $response["message"] = "Lỗi khi lưu tệp ảnh.";
@@ -326,30 +320,41 @@ public function themloaihang($TenLh, $Ghichu) {
   	}
 }
 //nhacungcap
-public function themnhacungcap($TenNcc, $Diachi , $Sdt) {
+public function themnhacungcap($TenNcc, $Diachi , $Sdt, $Hinhanh) {
 
 	$db = $this -> db;
 
-	if ( !empty($TenNcc) && !empty($Diachi) && !empty($Sdt)) {
+	if ( !empty($TenNcc) && !empty($Diachi) && !empty($Sdt) && !empty($Hinhanh)) {
 
-  		
-  			$result = $db -> insertNhacungcap( $TenNcc, $Diachi , $Sdt);
+    $imagePath = 'img1/' . date("d-m-y") . '-' . time() . '-' . rand(10000, 100000) . '.jpg';
+	
+    if (file_put_contents($imagePath, base64_decode($Hinhanh))) {
 
-  			if ($result) {
+      // Check if MaHH already exists
+      if ($db-> checkMancc($TenNcc)) {
+          $response["result"] = "failure";
+          $response["message"] = "Mã khách hàng đã tồn tại";
+          return json_encode($response);
+      } else {
+          // Insert data into the database along with the image path
+          $result = $db->insertNhacungcap($TenNcc, $Diachi, $Sdt, $imagePath);
 
-				  $response["result"] = "success";
-  				$response["message"] = "Thêm thông tin nhà cung cấp thành công !";
-  				return json_encode($response);
-
-  			} else {
-
-  				$response["result"] = "failure";
-  				$response["message"] = "Registration Failure";
-  				return json_encode($response);
-
-  			}
-  		
-  	} else {
+          if ($result) {
+              $response["result"] = "success";
+              $response["message"] = "Thêm thông tin thành công!";
+              return json_encode($response);
+          } else {
+              $response["result"] = "failure";
+              $response["message"] = "Registration Failure";
+              return json_encode($response);
+          }
+      }
+  } else {
+      $response["result"] = "failure";
+      $response["message"] = "Lỗi khi lưu tệp ảnh.";
+      return json_encode($response);
+  }
+} else {
 
   		return $this -> getMsgParamNotEmpty();
 

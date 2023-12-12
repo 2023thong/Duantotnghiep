@@ -43,11 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   		}
       ///thêm hàng hóa
       if($operation == 'thongtinvn'){
-        if(isset($data->user1) && !empty($data->user1) && isset($data->user1->MaHH) && isset($data->user1->MaNcc) 
+        if(isset($data->user1) && !empty($data->user1) && isset($data->user1->MaNcc) 
             && isset($data->user1->TenLh) && isset($data->user1->TenHh) && isset($data->user1->GiaSp) && isset($data->user1->Ghichu) && isset($data->user1->Soluong) && isset($data->user1->imageBase64) ){
             
             $user1 = $data->user1;
-            $MaHH = $user1->MaHH;
             $MaNcc = $user1->MaNcc;
             $TenLh = $user1->TenLh;
             $TenHh = $user1->TenHh;
@@ -57,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             $imageBase64 = $user1->imageBase64;
   
             // Sử dụng $path để lưu trữ đường dẫn ảnh
-            echo $fun->themnhanvien($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong,$imageBase64);
+            echo $fun->themnhanvien( $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong,$imageBase64);
         } 
         else {
             echo $fun->getMsgInvalidParam0();
@@ -273,17 +272,18 @@ if($operation == 'suaban'){
     //thêm ncc
     if($operation == 'nhacungcap'){
       if(isset($data->user2) && !empty($data->user2) && isset($data->user2->TenNcc) 
-          && isset($data->user2->Diachi) && isset($data->user2->Sdt)){
+          && isset($data->user2->Diachi) && isset($data->user2->Sdt) && isset($data->user2->Hinhanh)){
           
           $user2 = $data->user2;
           $TenNcc = $user2->TenNcc;
           $Diachi = $user2->Diachi;
           $Sdt = $user2->Sdt;
+          $Hinhanh = $user2->Hinhanh;
   
-          echo $fun->themnhacungcap($TenNcc, $Diachi, $Sdt);
+          echo $fun->themnhacungcap($TenNcc, $Diachi, $Sdt,$Hinhanh);
       } 
       else {
-          echo $fun->getMsgInvalidParam();
+          echo $fun->getMsgInvalidParam0();
       }
   }
 

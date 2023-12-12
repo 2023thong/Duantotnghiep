@@ -42,12 +42,11 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
 }
 
  //thêm hàng hóa
- public function insertHanghoa($MaHH, $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imagePath) {
-    $sql = 'INSERT INTO hanghoa (MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong, imagePath) VALUES (:MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong, :imagePath)';
+ public function insertHanghoa($MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imagePath) {
+    $sql = 'INSERT INTO hanghoa ( MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong, imagePath) VALUES ( :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong, :imagePath)';
 
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
-        ':MaHH' => $MaHH,
         ':MaNcc' => $MaNcc,
         ':TenLh' => $TenLh,
         ':TenHh' => $TenHh,
@@ -320,13 +319,14 @@ public function xoancc2($MaNcc) {
 }
 
 
-public function insertNhacungcap($TenNcc, $Diachi, $Sdt) {
-    $sql = 'INSERT INTO nhacungcap (TenNcc, Diachi, Sdt) VALUES (:TenNcc, :Diachi, :Sdt)';
+public function insertNhacungcap($TenNcc, $Diachi, $Sdt,$imagePath) {
+    $sql = 'INSERT INTO nhacungcap (TenNcc, Diachi, Sdt, imagePath) VALUES (:TenNcc, :Diachi, :Sdt , :imagePath)';
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
         ':TenNcc' => $TenNcc,
         ':Diachi' => $Diachi,
-        ':Sdt' => $Sdt
+        ':Sdt' => $Sdt,
+        ':imagePath' => $imagePath
     ));
 
     return $result;
@@ -647,11 +647,11 @@ public function xoanhanvien($MaNv) {
         return false;
     }
  }
- public function checkMancc($MaNcc){
+ public function checkMancc($TenNcc){
 
-    $sql = 'SELECT COUNT(*) from nhacungcap WHERE MaNcc =:MaNcc';
+    $sql = 'SELECT COUNT(*) from nhacungcap WHERE TenNcc =:TenNcc';
     $query = $this -> conn -> prepare($sql);
-    $query -> execute(array('MaNcc' => $MaNcc));
+    $query -> execute(array('TenNcc' => $TenNcc));
 
     if($query){
 
