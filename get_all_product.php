@@ -33,7 +33,6 @@ try {
             $product["GiaSp"] = $row["GiaSp"];
             $product["Ghichu"] = $row["Ghichu"];
             $product["Soluong"] = $row["Soluong"];
-
             // push single product into final response array
             array_push($response["hanghoa"], $product);
         }

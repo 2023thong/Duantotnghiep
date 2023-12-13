@@ -8,12 +8,11 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-if (!empty($_GET['MaNv'])) {
-    $MaNv = mysqli_real_escape_string($con, $_GET['MaNv']); // Sanitize input to prevent SQL injection
+if (!empty($_GET['TenDu'])) {
+    $TenDu = mysqli_real_escape_string($con, $_GET['TenDu']); // Sanitize input to prevent SQL injection
 
-    $selectSql = "SELECT Hinhanh FROM nhanvien WHERE MaNv = '$MaNv'";
+    $selectSql = "SELECT Hinhanh FROM menu WHERE TenDu = '$TenDu'";
     $result = mysqli_query($con, $selectSql);
-
     if ($result) {
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
@@ -22,19 +21,20 @@ if (!empty($_GET['MaNv'])) {
             if (file_exists($imagePath)) {
                 // Set the appropriate headers to indicate that this is an image
                 header('Content-Type: image/jpeg');
+
                 // Output the image data
                 readfile($imagePath);
             } else {
                 echo "Image not found";
             }
         } else {
-            echo "No image found for the provided MaNv";
+            echo "No image found for the provided TenDu";
         }
     } else {
         echo "Database query error: " . mysqli_error($con);
     }
 } else {
-    echo "Missing MaNv parameter";
+    echo "Missing TenDu parameter";
 }
 
 // Đóng kết nối MySQL sau khi hoàn tất

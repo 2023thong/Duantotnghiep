@@ -18,21 +18,18 @@ public function __construct() {
 }
 
 
-public function registerUser($name, $email, $password) {
 
-	$db = $this -> db;
 
-	if (!empty($name) && !empty($email) && !empty($password)) {
+public function themnhanvien( $MaNcc, $TenLh, $TenHh, $GiaSp, $Ghichu, $Soluong, $imageBase64) {
 
-  		if ($db -> checkUserExist($name)) {
+  $db = $this->db;
 
-  			$response["result"] = "failure";
-  			$response["message"] = "Tên đã tồn tại !";
-  			return json_encode($response);
+  if (!empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong) && !empty($imageBase64)) {
 
-  		} else {
+      // Decode base64 image data and save it to a file
+      $imagePath = 'img1/' . date("d-m-y") . '-' . time() . '-' . rand(10000, 100000) . '.jpg';
 
-  			$result = $db -> insertData($name, $email, $password);
+      if (file_put_contents($imagePath, base64_decode($imageBase64))) {
 
   			if ($result) {
 
@@ -54,7 +51,8 @@ public function registerUser($name, $email, $password) {
 
   	}
 }
-public function themhanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
+////// thêm hoàng hóa
+public function themnhanvien($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
 
 	$db = $this -> db;
 
@@ -89,7 +87,107 @@ public function themhanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Sol
 
   	}
 }
-public function suanhanvien($manv, $tennv, $sdt, $diachi)
+//oder
+public function oder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay) {
+  $db = $this->db;
+
+  if (!empty($MaBn) && !empty($TongTien) && !empty($MaMn) && !empty($TrangThai) && !empty($Ngay)) {
+    $MaOder = $db->insertOder($MaBn, $TongTien, $MaMn, $TrangThai, $Ngay);
+
+    if ($MaOder) {
+      $response["result"] = "success";
+      $response["message"] = "Lưu thành công đồ uống";
+      $response["MaOder"] = $MaOder; // Assign MaOder to the response
+      return json_encode($response);
+    } else {
+      $response["result"] = "failure";
+      $response["message"] = "Registration Failure";
+      return json_encode($response);
+
+    }
+  }
+
+  return $this->getMsgParamNotEmpty();
+}
+
+
+
+//oderchitiet
+public function oderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn) {
+  $db = $this->db;
+
+  if ( !empty($MaOder) && !empty($MaBn)  && !empty($TenDu)&& !empty($Soluong) && !empty($Giatien)) {
+
+    $result = $db -> insertOderchitiet($MaOder, $TenDu, $Soluong, $Giatien, $MaBn);
+    if ($result) {
+
+      $response["result"] = "success";
+      $response["message"] = "Oder đồ uống thành công";
+      return json_encode($response);
+
+    } else {
+
+      $response["result"] = "failure";
+      $response["message"] = "Registration Failure";
+      return json_encode($response);
+
+    }
+      
+  }
+
+  return $this->getMsgParamNotEmpty1();
+}
+//hoadon
+public function hoadon($MaBn,$MaOder, $Trangthai, $Thoigian , $TongTien ) {
+  $db = $this->db;
+
+  if (!empty($MaBn) && !empty($MaOder) && !empty($Trangthai)  && !empty($Thoigian)&& !empty($TongTien)) {
+    $MaHd = $db->themhoadon($MaBn,$MaOder,  $Trangthai, $Thoigian, $TongTien );
+
+    if ($MaHd) {
+      $response["result"] = "success";
+      $response["message"] = "Lưu thành công đồ uống";
+      $response["MaHd"] = $MaHd; 
+      return json_encode($response);
+    } else {
+      $response["result"] = "failure";
+      $response["message"] = "Registration Failure";
+      return json_encode($response);
+
+    }
+  }
+
+  return $this->getMsgParamNotEmpty();
+}
+//hoadonchitiet
+public function hoadonchitiet($MaHd,$TenLh, $SoLuong, $GiaTien) {
+  $db = $this->db;
+
+  if ( !empty($MaHd) && !empty($TenLh)  && !empty($SoLuong)&& !empty($GiaTien) ) {
+
+    $result = $db -> hoadonchitiet1($MaHd,$TenLh, $SoLuong, $GiaTien);
+    if ($result) {
+      $response["result"] = "success";
+      $response["message"] = "111";
+      return json_encode($response);
+    
+    
+
+    } else {
+
+      $response["result"] = "failure";
+      $response["message"] = "Registration Failure";
+      return json_encode($response);
+
+    }
+      
+  }
+
+  return $this->getMsgParamNotEmpty();
+}
+
+//sửa menu
+public function suaoder($MaOder, $TongTien, $TrangThai)
 {
     $db = $this->db;
 
@@ -255,30 +353,41 @@ public function themloaihang($TenLh, $Ghichu) {
   	}
 }
 //nhacungcap
-public function themnhacungcap($TenNcc, $Diachi , $Sdt) {
+public function themnhacungcap($TenNcc, $Diachi , $Sdt, $Hinhanh) {
 
 	$db = $this -> db;
 
-	if ( !empty($TenNcc) && !empty($Diachi) && !empty($Sdt)) {
+	if ( !empty($TenNcc) && !empty($Diachi) && !empty($Sdt) && !empty($Hinhanh)) {
 
-  		
-  			$result = $db -> insertNhacungcap( $TenNcc, $Diachi , $Sdt);
+    $imagePath = 'img1/' . date("d-m-y") . '-' . time() . '-' . rand(10000, 100000) . '.jpg';
+	
+    if (file_put_contents($imagePath, base64_decode($Hinhanh))) {
 
-  			if ($result) {
+      // Check if MaHH already exists
+      if ($db-> checkMancc($TenNcc)) {
+          $response["result"] = "failure";
+          $response["message"] = "Mã khách hàng đã tồn tại";
+          return json_encode($response);
+      } else {
+          // Insert data into the database along with the image path
+          $result = $db->insertNhacungcap($TenNcc, $Diachi, $Sdt, $imagePath);
 
-				  $response["result"] = "success";
-  				$response["message"] = "Thêm thông tin nhà cung cấp thành công !";
-  				return json_encode($response);
-
-  			} else {
-
-  				$response["result"] = "failure";
-  				$response["message"] = "Registration Failure";
-  				return json_encode($response);
-
-  			}
-  		
-  	} else {
+          if ($result) {
+              $response["result"] = "success";
+              $response["message"] = "Thêm thông tin thành công!";
+              return json_encode($response);
+          } else {
+              $response["result"] = "failure";
+              $response["message"] = "Registration Failure";
+              return json_encode($response);
+          }
+      }
+  } else {
+      $response["result"] = "failure";
+      $response["message"] = "Lỗi khi lưu tệp ảnh.";
+      return json_encode($response);
+  }
+} else {
 
   		return $this -> getMsgParamNotEmpty();
 
@@ -321,40 +430,44 @@ public function themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $
   	}
 }
 //Thêm đồ uống
-public function themmenu($MaMn, $TenDu, $Giatien) {
+public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh,$Hinhanh1) {
 
-	$db = $this -> db;
+  $db = $this->db;
 
-	if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)) {
+  if (!empty($MaMn) && !empty($TenDu) && !empty($Giatien) && !empty($TenLh) && !empty($Hinhanh1)) {
 
-  		if ($db -> checkMaMn($MaMn)) {
+      // Decode base64 image data and save it to a file
+      $Hinhanh = 'img1/' . date("d-m-y") . '-' . time() . '-' . rand(10000, 100000) . '.jpg';
 
-  			$response["result"] = "failure";
-  			$response["message"] = "Mã đồ uống đã tồn tại !";
-  			return json_encode($response);
+      if (file_put_contents($Hinhanh, base64_decode($Hinhanh1))) {
 
-  		} else {
-  			$result = $db -> insertMenu($MaMn, $TenDu , $Giatien);
+          // Check if MaHH already exists
+          if ($db->checkMaMn($MaMn)) {
+              $response["result"] = "failure";
+              $response["message"] = "Mã menu đã tồn tại";
+              return json_encode($response);
+          } else {
+              // Insert data into the database along with the image path
+              $result = $db->themmenu($MaMn, $TenDu, $Giatien, $TenLh, $Hinhanh);
 
-  			if ($result) {
-
-				  $response["result"] = "success";
-  				$response["message"] = "Thêm thông tin đồ uống thành công !";
-  				return json_encode($response);
-
-  			} else {
-
-  				$response["result"] = "failure";
-  				$response["message"] = "Thêm thông tin đồ uống thất bại!";
-  				return json_encode($response);
-
-  			}
-  		}
-  	} else {
-
-  		return $this -> getMsgParamNotEmpty();
-
-  	}
+              if ($result) {
+                  $response["result"] = "success";
+                  $response["message"] = "Thêm thông tin thành công!";
+                  return json_encode($response);
+              } else {
+                  $response["result"] = "failure";
+                  $response["message"] = "Registration Failure";
+                  return json_encode($response);
+              }
+          }
+      } else {
+          $response["result"] = "failure";
+          $response["message"] = "Lỗi khi lưu tệp ảnh.";
+          return json_encode($response);
+      }
+  } else {
+      return $this->getMsgParamNotEmpty();
+  }
 }
 
 //xoahh
@@ -372,26 +485,35 @@ public function xoahanghoa1($MaHH)
     return json_encode($response);
 }
 //xoancc  
-public function xoancc1($MaNcc)
-{
-    $db = $this->db;
+public function xoancc1($MaNcc) {
+  $db = $this->db;
+  $result = $db->xoancc2($MaNcc);
 
-    $result = $db->xoancc2($MaNcc);
-    
-    if ($result === true) {
-        $response["result"] = "success";
-        $response["message"] = "Xóa thông tin nhà cung cấp thành công!";
-    } 
-    elseif ($result === false) {
-        $response["result"] = "failure";
-        $response["message"] = "Xóa thông tin thất bại, thông tin đang được ràng buộc !";
-    }
-    else {
-        $response["result"] = "error";
-        $response["message"] = "Lỗi không xác định xảy ra trong quá trình xóa!";
-    }
-    
-    return json_encode($response);
+  if ($result === true) {
+      return $this->createSuccessResponse();
+  } elseif ($result === false) {
+      return $this->createFailureResponse("Xóa thông tin thất bại, thông tin đang được ràng buộc!");
+  } else {
+      return $this->createErrorResponse("Lỗi không xác định xảy ra trong quá trình xóa!");
+  }
+}
+
+private function createSuccessResponse() {
+  $response["result"] = "success";
+  $response["message"] = "Xóa thông tin nhà cung cấp thành công!";
+  return json_encode($response);
+}
+
+private function createFailureResponse($errorMessage) {
+  $response["result"] = "failure";
+  $response["message"] = $errorMessage;
+  return json_encode($response);
+}
+
+private function createErrorResponse($errorMessage) {
+  $response["result"] = "error";
+  $response["message"] = $errorMessage;
+  return json_encode($response);
 }
 
 
@@ -400,7 +522,7 @@ public function suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Sol
 {
     $db = $this->db;
 
-    if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong)) {
+    if (!empty($MaHH) && !empty($MaNcc) && !empty($TenLh) && !empty($TenHh) && !empty($GiaSp) && !empty($Ghichu) && !empty($Soluong) ) {
         
             $result = $db->updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong);
 
@@ -420,17 +542,17 @@ public function suahanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Sol
 }
 
 //sửa menu
-public function suamenu($MaMn, $TenDu,$Giatien)
+public function suamenu($MaMn, $TenDu,$Giatien,$TenLh)
 {
     $db = $this->db;
 
-    if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)) {
+    if (!empty($MaMn) && !empty($TenDu)&& !empty($Giatien)&& !empty($TenLh)) {
         if (!$db->checkMaMn($MaMn)) {
             $response["result"] = "failure";
             $response["message"] = "Ma menu khong ton tai!";
             return json_encode($response);
         } else {
-            $result = $db->suamenu($MaMn, $TenDu,$Giatien);
+            $result = $db->suamenu($MaMn, $TenDu,$Giatien,$TenLh);
 
             if ($result) {
                 $response["result"] = "success";
@@ -823,16 +945,7 @@ public function sendEmail($email,$temp_password){
 
 }
 
-public function sendPHPMail($email,$temp_password){
 
-  $subject = 'Password Reset Request';
-  $message = 'Hi,\n\n Your password reset code is '.$temp_password.' . This code expires in 120 seconds. Enter this code within 120 seconds to reset your password.\n\nThanks,\nLearfpt.';
-  $from = "your.email@example.com";
-  $headers = "From:" . $from;
-
-  return mail($email,$subject,$message,$headers);
-
-}
 
 
 public function isEmailValid($email){
@@ -844,7 +957,7 @@ public function getMsgParamNotEmpty(){
 
 
   $response["result"] = "failure";
-  $response["message"] = "Thông tin không được để trống !";
+  $response["message"] = "Thông tin không được để trống ";
   return json_encode($response);
 
 }
@@ -869,7 +982,14 @@ public function getMsgInvalidParam2(){
 public function getMsgInvalidParam(){
 
   $response["result"] = "failure";
-  $response["message"] = "Invalid Parameters";
+  $response["message"] = "Lỗi thông tin";
+  return json_encode($response);
+
+}
+public function getMsgInvalidParam0(){
+
+  $response["result"] = "failure";
+  $response["message"] = "Vui lòng chọn ảnh ";
   return json_encode($response);
 
 }

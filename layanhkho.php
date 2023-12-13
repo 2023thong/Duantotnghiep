@@ -8,16 +8,17 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-if (!empty($_GET['MaNv'])) {
-    $MaNv = mysqli_real_escape_string($con, $_GET['MaNv']); // Sanitize input to prevent SQL injection
+if (!empty($_GET['MaHH'])) {
+    $MaHH = mysqli_real_escape_string($con, $_GET['MaHH']); // Sanitize input to prevent SQL injection
 
-    $selectSql = "SELECT Hinhanh FROM nhanvien WHERE MaNv = '$MaNv'";
+    $selectSql = "SELECT imagePath FROM hanghoa WHERE MaHH  = '$MaHH'";
     $result = mysqli_query($con, $selectSql);
 
     if ($result) {
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
-            $imagePath = $row['Hinhanh'];
+            $imagePath = $row['imagePath'];
+
             // Check if the image file exists
             if (file_exists($imagePath)) {
                 // Set the appropriate headers to indicate that this is an image
