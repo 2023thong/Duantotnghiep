@@ -39,74 +39,23 @@ public function __construct() {
 
     }
  }
- //thêm hàng hóa
  public function insertHanghoa($MaHH, $MaNcc, $MaLh , $TenHh, $GiaSp, $Ghichu, $Soluong) {
     $unique_id = uniqid('', true);
 
-    $sql = 'INSERT INTO hanghoa (unique_id, MaHH, MaNcc, MaLh, TenHh, GiaSp, Ghichu, Soluong) VALUES (:unique_id, :MaHH, :MaNcc, :MaLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
+    $sql = 'INSERT INTO hanghoa ( MaHH, MaNcc, TenLh, TenHh, GiaSp, Ghichu, Soluong) VALUES ( :MaHH, :MaNcc, :TenLh, :TenHh, :GiaSp, :Ghichu, :Soluong)';
 
     $query = $this->conn->prepare($sql);
     $result = $query->execute(array(
-        ':unique_id' => $unique_id,
+        
         ':MaHH' => $MaHH,
         ':MaNcc' => $MaNcc,
-        ':MaLh' => $MaLh,
+        ':TenLh' => $TenLh,
         ':TenHh' => $TenHh,
         ':GiaSp' => $GiaSp,
         ':Ghichu' => $Ghichu,
         ':Soluong' => $Soluong,
+    
 
-
-    ));
-
-    return $result; 
-}
-//thêm nhân viên
-public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$Chucvu){
-   
-    $sql = 'INSERT INTO nhanvien ( MaNv, TenNv, TenDn, Matkhau, Sdt, Diachi, Chucvu) VALUES ( :MaNv, :TenNv, :TenDn, :Matkhau, :Sdt, :Diachi, :Chucvu)';
-    $query =$this->conn->prepare($sql);
-    $result = $query->execute(array(
-        
-        ':MaNv' =>$MaNv,
-        ':TenNv'=>$TenNv,
-        ':TenDn'=>$TenDn,
-        ':Matkhau'=>$Matkhau,
-        ':Sdt'=>$Sdt,
-        ':Diachi'=>$Diachi,
-        ':Chucvu'=>$Chucvu,
-    ));
-    return $result; 
-}
-//thêm bàn
-public function insertBan($MaBn, $TenBan, $Trangthai) {
-    // $unique_id = uniqid('', true);
-
-    $sql = 'INSERT INTO ban (MaBn, TenBan, Trangthai) VALUES (:MaBn, :TenBan, :Trangthai)';
-
-    $query = $this->conn->prepare($sql);
-    $result = $query->execute(array(
-        // ':unique_id' => $unique_id,
-        ':MaBn' => $MaBn,
-        ':TenBan' => $TenBan,
-        ':Trangthai' => $Trangthai,
-
-    ));
-
-    return $result; 
-}
-//thêm đồ uống
-public function insertMenu($MaMn, $TenLh, $Giatien) {
-    // $unique_id = uniqid('', true);
-
-    $sql = 'INSERT INTO menu (MaMn, TenLh, Giatien) VALUES (:MaMn, :TenLh, :Giatien)';
-
-    $query = $this->conn->prepare($sql);
-    $result = $query->execute(array(
-        // ':unique_id' => $unique_id,
-        ':MaMn' => $MaMn,
-        ':TenLh' => $TenLh,
-        ':Giatien' => $Giatien,
 
     ));
 
@@ -155,6 +104,26 @@ public function checkLogin($TenDn, $Matkhau) {
     }
 }
 
+public function updateHanghoa($MaHH, $MaNcc, $TenLh , $TenHh, $GiaSp, $Ghichu, $Soluong)
+{
+    $sql = 'UPDATE hanghoa
+            SET MaNcc = :MaNcc, TenLh = :TenLh, TenHh = :TenHh, GiaSp = :GiaSp, Ghichu = :Ghichu, Soluong = :Soluong
+            Where MaHH = :MaHH ';
+
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(
+        ':MaHH' => $MaHH,
+        ':MaNcc' => $MaNcc,
+        ':TenLh' => $TenLh,
+        ':TenHh' => $TenHh,
+        ':GiaSp' => $GiaSp,
+        ':Ghichu' => $Ghichu,
+        ':Soluong' => $Soluong
+    ));
+
+    return $query->rowCount() > 0;
+}
+
 
 public function checkPermission($Chucvu) {
     
@@ -167,11 +136,11 @@ public function checkPermission($Chucvu) {
     }
 }
 
- //tim
- public function timnhanvien($manv) {
-    $sql = 'SELECT * FROM nhanvien WHERE manv = :manv';
+//tim
+ public function timnhanvien($MaNv) {
+    $sql = 'SELECT * FROM nhanvien WHERE MaNv = :MaNv';
     $query = $this->conn->prepare($sql);
-    $query->execute(array(':manv' => $manv));
+    $query->execute(array(':MaNv' => $MaNv));
     $data = $query->fetch(PDO::FETCH_ASSOC);
 
     return $data;
@@ -180,21 +149,56 @@ public function checkPermission($Chucvu) {
  public function updateThongtin($manv, $tennv, $sdt, $diachi)
 {
     $sql = 'UPDATE nhanvien
-            SET tennv = :tennv, sdt = :sdt, diachi = :diachi
-            WHERE manv = :manv';
+            SET TenNv = :TenNv, TenDn = :TenDn, Matkhau = :Matkhau,Sdt = :Sdt,Diachi = :Diachi,Chucvu = :Chucvu
+            WHERE MaNv = :MaNv';
 
     $query = $this->conn->prepare($sql);
     $query->execute(array(
-        ':manv' => $manv,
-        ':tennv' => $tennv,
-        ':sdt' => $sdt,
-        ':diachi' => $diachi
+        ':MaNv' => $MaNv,
+        ':TenNv' => $TenNv,
+        ':TenDn' => $TenDn,
+        ':Matkhau' => $Matkhau,
+        ':Sdt' => $Sdt,
+        ':Diachi' => $Diachi,
+        ':Chucvu' => $Chucvu
     ));
 
     return $query->rowCount() > 0;
 }
 //xoa
+public function deleteThongtin($manv)
+{
+    $sql = 'DELETE FROM nhanvien WHERE manv = :manv';
 
+    $query = $this->conn->prepare($sql);
+    $query->execute(array(':manv' => $manv));
+
+    return $query->rowCount() > 0;
+}
+
+
+ public function changePassword($name, $password){
+
+
+    $hash = $this -> getHash($password);
+    $encrypted_password = $hash["encrypted"];
+    $salt = $hash["salt"];
+
+    $sql = 'UPDATE users SET encrypted_password = :encrypted_password, salt = :salt WHERE name = :name';
+    $query = $this -> conn -> prepare($sql);
+    $query -> execute(array(':name' => $name, ':encrypted_password' => $encrypted_password, ':salt' => $salt));
+
+    if ($query) {
+
+        return true;
+
+    } else {
+
+        return false;
+
+    }
+
+ }
  public function doimatkhau($TenDn, $Matkhau) {
     
 
@@ -290,30 +294,6 @@ public function checkPermission($Chucvu) {
         return false;
     }
  }
-  public function checkMaMn($MaMn){
-
-    $sql = 'SELECT COUNT(*) from menu WHERE MaMn =:MaMn';
-    $query = $this -> conn -> prepare($sql);
-    $query -> execute(array('MaMn' => $MaMn));
-
-    if($query){
-
-        $row_count = $query -> fetchColumn();
-
-        if ($row_count == 0){
-
-            return false;
-
-        } else {
-
-            return true;
-
-        }
-    } else {
-
-        return false;
-    }
- }
 
  public function getHash($password) {
 
@@ -333,5 +313,9 @@ public function verifyHash($password, $hash) {
 
     return password_verify ($password, $hash);
 }
+public function beginTransaction() {
+    return $this->conn->beginTransaction();
+}
+
 }
 
