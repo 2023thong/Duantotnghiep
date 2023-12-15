@@ -375,7 +375,8 @@ if($operation == 'suaban'){
       if($operation == 'themnhanvien'){
 
   			if(isset($data -> user ) && !empty($data -> user) && isset($data -> user -> MaNv) && isset($data -> user -> TenNv) 
-        && isset($data -> user -> TenDn) && isset($data -> user -> Matkhau) && isset($data -> user -> Sdt) && isset($data -> user -> Diachi) && isset($data -> user -> Chucvu) 
+        && isset($data -> user -> TenDn) && isset($data -> user -> Matkhau) && isset($data -> user -> Sdt) && isset($data -> user -> Diachi) 
+      && isset($data -> user -> Chucvu) && isset($data -> user -> Hinhanh1)
   				){
 
   				$user = $data -> user;
@@ -386,11 +387,8 @@ if($operation == 'suaban'){
           $Sdt = $user -> Sdt;
           $Diachi = $user -> Diachi;
           $Chucvu = $user -> Chucvu;
-
-  				
-
-          
-            echo $fun -> themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $Chucvu);
+          $Hinhanh1 = $user -> Hinhanh1;
+            echo $fun -> themnhanvien1($MaNv, $TenNv, $TenDn , $Matkhau, $Sdt, $Diachi, $Chucvu,$Hinhanh1);
 
           } 
           else {
