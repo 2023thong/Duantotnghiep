@@ -333,9 +333,9 @@ public function insertNhacungcap($TenNcc, $Diachi, $Sdt,$imagePath) {
 }
 
 //thêm nhân viên
-public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$Chucvu){
+public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$Chucvu,$Hinhanh){
    
-    $sql = 'INSERT INTO nhanvien ( MaNv, TenNv, TenDn, Matkhau, Sdt, Diachi, Chucvu) VALUES ( :MaNv, :TenNv, :TenDn, :Matkhau, :Sdt, :Diachi, :Chucvu)';
+    $sql = 'INSERT INTO nhanvien ( MaNv, TenNv, TenDn, Matkhau, Sdt, Diachi, Chucvu,Hinhanh) VALUES ( :MaNv, :TenNv, :TenDn, :Matkhau, :Sdt, :Diachi, :Chucvu,:Hinhanh)';
     $query =$this->conn->prepare($sql);
     $result = $query->execute(array(
         
@@ -346,6 +346,7 @@ public function insertNhanVien($MaNv, $TenNv, $TenDn, $Matkhau, $Sdt, $Diachi,$C
         ':Sdt'=>$Sdt,
         ':Diachi'=>$Diachi,
         ':Chucvu'=>$Chucvu,
+        ':Hinhanh'=>$Hinhanh,
     ));
     return $result; 
 }
