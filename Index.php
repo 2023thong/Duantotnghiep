@@ -81,6 +81,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           echo $fun->getMsgInvalidParam();
       }
   }
+  if($operation == 'Maqr'){
+    if(isset($data->qr) && !empty($data->qr) && isset($data->qr->Hinhanh) ){
+        
+        $qr = $data->qr;
+        $Hinhanh = $qr->Hinhanh;
+       
+        // Sử dụng $path để lưu trữ đường dẫn ảnh
+        echo $fun->Maqr1($Hinhanh);
+    } 
+    else {
+        echo $fun->getMsgInvalidParam0();
+    }
+}
   //oderchitiet
   if ($operation == 'oderchitiet') {
     if (isset($data->oder1) && !empty($data->oder1) && isset($data->oder1->MaOder) && isset($data->oder1->TenDu)

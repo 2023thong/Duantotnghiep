@@ -59,6 +59,20 @@ public function updatemenu($MaMn, $TenLh, $Giatien)
     return $result;
 }
 
+//insertQr($Anh)
+
+public function insertQr($Anh) {
+    $sql = 'INSERT INTO qr ( Anh) VALUES ( :Anh)';
+
+    $query = $this->conn->prepare($sql);
+    $result = $query->execute(array(
+        ':Anh' => $Anh,
+        
+    ));
+
+    return $result;
+}
+
 //thêm hoa đơn
 public function themhoadon($MaBn, $MaOder,  $Trangthai, $Thoigian, $TongTien) {
     $sql = 'INSERT INTO hoadon (MaBn, MaOder,  Trangthai, Thoigian, TongTien) VALUES (:MaBn, :MaOder, :Trangthai, :Thoigian, :TongTien)';

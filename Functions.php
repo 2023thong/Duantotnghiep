@@ -392,6 +392,38 @@ public function themnhanvien1($MaNv, $TenNv, $TenDn,$Matkhau,$Sdt,$Diachi,$Chucv
       return $this->getMsgParamNotEmpty();
   }
 }
+
+//Maqr($Anh)
+public function Maqr1($Hinhanh) {
+
+  $db = $this->db;
+
+  if (!empty($Hinhanh) ) {
+
+      // Decode base64 image data and save it to a file
+      $Anh = 'img1/' . date("d-m-y") . '-' . time() . '-' . rand(10000, 100000) . '.jpg';
+
+      if (file_put_contents($Anh, base64_decode($Hinhanh))) {
+              $result = $db->insertQr($Anh);
+
+              if ($result) {
+                  $response["result"] = "success";
+                  $response["message"] = "Thêm mã Qr thành công";
+                  return json_encode($response);
+              } else {
+                  $response["result"] = "failure";
+                  $response["message"] = "Registration Failure";
+                  return json_encode($response);
+              }
+          }
+      
+   else {
+      return $this->getMsgParamNotEmpty();
+  }
+}
+}
+
+
 //Thêm đồ uống
 public function themmenu1($MaMn, $TenDu, $Giatien,$TenLh,$Hinhanh1) {
 
